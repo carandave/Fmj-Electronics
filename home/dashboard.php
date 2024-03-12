@@ -70,7 +70,7 @@
         $data1[] = $row1;
     }
 
-    // Convert data to JSON
+    // Convert data to JSON Hello
     $json_data1 = json_encode($data1);
 
 ?>
