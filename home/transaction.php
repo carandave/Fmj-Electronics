@@ -65,33 +65,11 @@
                                             </div>
 
                                             <div class="col-md-8">
-                                                <input type="text" name="productId" id="productId" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0" readonly>
+                                                <input type="text" name="productId" id="productId" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0" readonly>
                                             </div>
                                         </div>
-                                        
-                                    </div>
-                                    <div class="col-md-5 pl-0">
-                                        
+
                                         <div class="row">
-                                            <div class="col-md-4 pr-0  d-flex justify-content-end align-items-center">
-                                                <label for="" class="mb-0 font-weight-bold text-light bg-success" style="font-size: 22px; padding: 1px 20px;">Stocks:</label>
-                                            </div>
-
-                                            <div class="col-md-8">
-                                                <input type="text" name="stocks" id="stocks" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0" readonly>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-2">
-                                        
-                                    </div>
-                                </div>
-
-
-                            <div class="row mt-2">
-                                <div class="col-md-5 pr-0">
-                                    <div class="row">
                                         <div class="col-md-5 pr-0 d-flex justify-content-end align-items-center">
                                             <label for="" class="mb-0 font-weight-bold" style="font-size: 22px">Transaction No.:</label>
                                         </div>
@@ -107,12 +85,44 @@
 
                                                     $newEntryNumber = str_pad((int)$count + 1, 6, '00000', STR_PAD_LEFT);
 
-                                                    echo '<input type="text" name="transactionNo" id="transactionNo" value="'.$newEntryNumber.'" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; ">';
+                                                    echo '<input type="text" name="transactionNo" id="transactionNo" value="'.$newEntryNumber.'" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " readonly>';
                                                 }
                                             ?>
 
                                     
                                             
+                                        </div>
+                                    </div>
+                                        
+                                    </div>
+                                    <div class="col-md-5 pl-0">
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4 pr-0  d-flex justify-content-end align-items-center">
+                                                <label for="" class="mb-0 font-weight-bold text-light bg-success" style="font-size: 22px; padding: 1px 20px;">Stocks:</label>
+                                            </div>
+
+                                            <div class="col-md-8">
+                                                <input type="text" name="stocks" id="stocks" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0" readonly>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        
+                                    </div>
+                                </div>
+
+
+                            <div class="row mt-2">
+                                <div class="col-md-5 pr-0">
+                                    <div class="row">
+                                        <div class="col-md-5 pr-0 d-flex justify-content-end align-items-center">
+                                            <label for="" class="mb-0 font-weight-bold" style="font-size: 22px">Bar Code:</label>
+                                        </div>
+
+                                        <div class="col-md-7">
+                                            <input type="text" name="barcode" id="barcode" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " autofocus>
                                         </div>
                                     </div>
                                 </div>
@@ -124,7 +134,7 @@
                                         </div>
 
                                         <div class="col-md-8">
-                                            <input type="text" name="price" id="price" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0" readonly>
+                                            <input type="text" name="price" id="price" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0" readonly>
                                         </div>
                                     </div>
 
@@ -138,11 +148,11 @@
                                 <div class="col-md-5 pr-0">
                                     <div class="row">
                                         <div class="col-md-5 pr-0 d-flex justify-content-end align-items-center">
-                                            <label for="" class="mb-0 font-weight-bold" style="font-size: 22px">Item Description:</label>
+                                            <label for="" class="mb-0 font-weight-bold" style="font-size: 22px;">Item Description:</label>
                                         </div>
 
                                         <div class="col-md-7">
-                                            <select name="item-dropdown" id="selectpicker" data-live-search="true" class="form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; ">
+                                            <select name="item-dropdown" id="selectpicker" data-live-search="true" class="form-control" style="background-color: lightgray; color: black; font-size: 20px; text-align: center; font-weight: 800; ">
                                                 <option value="">Select Item Description</option>
                                                 <?php 
                                                     $sqlp = "SELECT p.product_Id, p.item_code, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
@@ -150,7 +160,7 @@
 
                                                     if($resultp->num_rows > 0){
                                                         while($rowsp = $resultp->fetch_assoc()){
-                                                            echo '<option value="'.$rowsp['product_Id'].'">'.$rowsp['product_item_type_name'].'</option>';
+                                                            echo '<option value="'.$rowsp['product_Id'].'" style="text-align-center;">'.$rowsp['product_item_type_name'].'</option>';
                                                         }
                                                     }
                                                 ?>
@@ -169,7 +179,7 @@
                                         </div>
 
                                         <div class="col-md-8">
-                                            <input type="number" name="quantity" id="quantity" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0">
+                                            <input type="number" name="quantity" id="quantity" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0">
                                         </div>
                                     </div>
 
@@ -187,7 +197,7 @@
                                         </div>
 
                                         <div class="col-md-7 ">
-                                            <input type="text" name="itemCode" id="itemCode" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; " value="N/A" readonly>
+                                            <input type="text" name="itemCode" id="itemCode" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " value="N/A" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -198,7 +208,7 @@
                                         </div>
 
                                         <div class="col-md-8">
-                                            <input type="number" name="amount" id="amount" class="form-control-sm form-control" style="background-color: lightgray; color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0.00" readonly>
+                                            <input type="number" name="amount" id="amount" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " value="0.00" readonly>
                                         </div>
                                     </div>
 
@@ -294,6 +304,99 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
     <script>
+
+        $('#barcode').on('input', function(e){
+            let scannedValue = e.target.value;
+            // console.log(scannedValue); 
+
+            let selectpicker = document.getElementById('selectpicker');
+            let barcodeValue = $('#barcode').val();        
+            console.log("BARCODE" + barcodeValue) 
+                
+                $.ajax({
+                method: "POST",
+                url: "../processPhp/getScannedProduct_process.php",
+                data: {scanned_product: scannedValue},
+                success: function(response){
+
+                    console.log("Response" + response)
+
+                    if (Array.isArray(response) && response.length === 0) {
+                    // Array is empty
+                    console.log("The array response is empty.");
+                    $("#quantity").val(0);
+                    $("#amount").val(0);
+                    $("#itemCode").val('N/A');
+                    $("#price").val(0);
+                    $("#stocks").val(0);
+                    $("#productId").val(0);
+                    $('#selectpicker').val(null);
+                    $('#selectpicker').selectpicker('refresh');
+                    } else {
+                    // Array is not empty or not an array
+                    console.log("The array response is not empty.");
+
+                        for (var i = 0; i < selectpicker.options.length; i++) {
+                            var option = selectpicker.options[i];
+                            
+                            // Check if the value of the option matches the product_id
+                            if (option.value == response[0].product_Id) {
+                                // Select the option
+                                console.log(option);
+                                option.selected = true;
+                                break; // Exit the loop since we found the matching option
+                            }
+                        }
+                        
+                        $("#quantity").val(0);
+                        $("#amount").val(0);
+                        $("#itemCode").val(response[0].item_code);
+                        $("#price").val(response[0].prize);
+                        $("#stocks").val(response[0].stocks);
+                        $("#productId").val(response[0].product_Id);
+                        
+                        $('#selectpicker').selectpicker('refresh');
+
+                        $('#quantity').focus();
+                    }
+
+                    // if(response[0].product_Id == ""){
+                    //     alert("Walang aman")
+                    // }
+
+                    // else{
+                    //     alert("Meron aman")
+                    // }
+
+                    // for (var i = 0; i < selectpicker.options.length; i++) {
+                    //     var option = selectpicker.options[i];
+                        
+                    //     // Check if the value of the option matches the product_id
+                    //     if (option.value == response[0].product_Id) {
+                    //         // Select the option
+                    //         console.log(option);
+                    //         option.selected = true;
+                    //         break; // Exit the loop since we found the matching option
+                    //     }
+                    // }
+                    
+                    // $("#quantity").val(0);
+                    // $("#amount").val(0);
+                    // $("#itemCode").val(response[0].item_code);
+                    // $("#price").val(response[0].prize);
+                    // $("#stocks").val(response[0].stocks);
+                    // $("#productId").val(response[0].product_Id);
+
+                    // $('#selectpicker').selectpicker('refresh');
+
+                    // $('#quantity').focus();
+
+                    
+
+                    }
+                })
+            
+        })
 
         $('#payment').on('change', function(){
             // let payment = this.value;
@@ -417,7 +520,7 @@
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
-                            title: 'Out of Stock!',
+                            title: 'Insufficient Stock!',
                             showConfirmButton: false,
                             timer: 1500  
                         }).then(function(){
@@ -439,7 +542,23 @@
 
                         updateCartTable();
 
+                        // let quantity = parseInt(document.getElementById('quantity').value);
+                        // let itemCode = document.getElementById('itemCode').value;
+                        // let amount = parseInt(document.getElementById('amount').value);
+                        // let stocks = parseInt(document.getElementById('stocks').value);
+                        // let product_Id = parseInt(document.getElementById('productId').value);
+
                         
+                        $('#quantity').val(0);
+                        $('#price').val(0);
+                        $('#stocks').val(0);
+                        $('#amount').val(0);
+                        $('#itemCode').val('N/A');
+                    
+
+                        // $('#selectpicker').prop('selected', false);
+                        $('#selectpicker').val(null);
+                        $('#selectpicker').selectpicker('refresh');
                         
 
 
@@ -459,7 +578,8 @@
                 // $('#total').val(sum);
 
                 // updateCartTable();
-
+                $('#barcode').val(null)
+                $('#barcode').focus()
                 let total = parseInt($('#total').val());
                 let payment = parseInt($('#payment').val());
                 let change = parseInt($('#change').val());
@@ -708,6 +828,8 @@
                             $("#productId").val(response[0].product_Id);
                         }
                     })
+
+                    $('#quantity').focus();
 
                 }
 

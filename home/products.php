@@ -108,6 +108,11 @@
                                                     </select>
                                                 </div>
 
+                                                <div class="mt-1">
+                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Barcode</label>
+                                                    <input type="text" id="barcode" name="barcode" class="form-control"  >
+                                                </div>
+
                                                 <div class="mt-2">
                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
                                                     <input type="text" name="stocks" class="form-control" >
@@ -146,6 +151,7 @@
                                     <tr>
                                         <th scope="col" class="text-center d-none" style="font-size: 20px; font-weight: 700">PRODUCT ID</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ITEM CODE</th>
+                                        <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">BARCODE</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">CATEGORY</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRODUCT</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRODUCT TYPES</th>
@@ -160,7 +166,7 @@
 
                                     // Dito na tayo sa pag didisplay ng product list 
                                     
-                                    $sql = "SELECT p.product_Id, p.item_code, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
+                                    $sql = "SELECT p.product_Id, p.item_code, p.barcode, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
                                     $result = $conn->query($sql);
                                     
                                     ?>
@@ -170,6 +176,7 @@
                                     <tr>
                                         <td class="td-product text-center d-none" style="font-size: 18px; font-weight: 700"><?php echo $row['product_Id'];?></td>
                                         <td class="td-product text-center" style="font-size: 18px; font-weight: 700"><?php echo $row['item_code'];?></td>
+                                        <td class="td-product text-center" style="font-size: 18px; font-weight: 700"><?php echo $row['barcode'];?></td>
                                         <td class="td-product text-center" style="font-size: 18px; font-weight: 700"><?php echo $row['category_Name'];?></td>
                                         <td class="td-product text-center" style="font-size: 18px; font-weight: 700"><?php echo $row['product_Name'];?></td>
                                         <td class="td-product text-center" style="font-size: 18px; font-weight: 700"><?php echo $row['product_item_name'];?></td>
@@ -223,6 +230,8 @@
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Type</label>
                                                                     <input type="text" id="edit_type_Id" name="edit_type_Id" class="form-control" readonly>
                                                                 </div>
+
+                                                                
 
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
