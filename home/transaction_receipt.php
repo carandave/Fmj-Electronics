@@ -87,7 +87,7 @@
                                         <td class="text-center" style="font-size: 20px;"><?php echo $row['final_total_amount'];?></td>
                                         <td class="text-center" style="font-size: 20px;"><?php echo date("F j Y", strtotime($row['date_added']));?></td>
                                         <td class="d-flex justify-content-center align-items-center">
-                                            <form action="transaction_receipt_view.php" method="POST">
+                                            <form action="transaction_receipt_view.php" method="GET">
                                                 <input type="text" name="transaction_number" class="d-none" value="<?php echo $row['transaction_Number'];?>">
                                                 <input type="submit" name="viewBtn" value="VIEW" class="btn btn-info btn-sm">
                                             </form>

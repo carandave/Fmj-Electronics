@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier" || $_SESSION['user_type']=="Staff") {
+        header('Location: dashboard.php');
+    }
+
     if(isset($_POST['printFilter'])){
         $from = $_POST['from'];
         $to = $_POST['to'];

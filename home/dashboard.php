@@ -166,12 +166,12 @@
 
                     <div class="col-md-4">
                         <div>
-                            <h3 class="text-center">Popular Products</h3>
+                            <h3 class="text-center" style="font-size: 19px; font-weight: 600; background-color: #606FF2; padding: 12px 15px; color: white; border-radius: 10px" >POPULAR PRODUCTS</h3>
                             <div class="box-pop-container">
                                 <?php if($resultpop->num_rows > 0){?>
                                     <?php while($row = $resultpop->fetch_assoc()){?>
-                                        <div class="box-pop bg-success p-2 mb-3" style="width: 100%;">
-                                            <p class="text-light mb-0 font-weight-bold" style="font-size: 18px; letter-spacing: 1px;"><?php echo $row['product_item_type_name'];?></p>
+                                        <div class="box-pop mb-2" style="width: 100%; background-color: #606ff2bd; border-radius: 10px">
+                                            <p class="text-light mb-0 font-weight-bold" style="font-size: 14px;"><?php echo $row['product_item_type_name'];?></p>
                                         </div>
                                     <?php  } ?>
                                 <?php  } ?>

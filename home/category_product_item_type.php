@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier") {
+        header('Location: dashboard.php');
+    }
+
     $user_type = $_SESSION['user_type'];
 
     
@@ -139,7 +143,7 @@
                                         <th class="d-none" scope="col">CATEGORY ID</th>
                                         <th class="d-none" scope="col">CATEGORY PRODUCT ID</th>
                                         <th class="d-none" scope="col">ITEM ID</th>
-                                        <th scope="col">TYPE ID</th>
+                                        <th class="d-none" scope="col">TYPE ID</th>
                                         <th scope="col">TYPES OF <span style="text-transform: uppercase"><?php echo $productitemName?></span></th>
                                         <th scope="col">ACTION</th>
                                     </tr>
@@ -159,11 +163,11 @@
                                         <td class="d-none"><?php echo $row['category_Id'];?></td>
                                         <td class="d-none"><?php echo $row['category_product_Id'];?></td>
                                         <td class="d-none"><?php echo $row['category_product_item_Id'];?></td>
-                                        <td><?php echo $row['category_product_item_type_Id'];?>
+                                        <td class="d-none"><?php echo $row['category_product_item_type_Id'];?>
                                         <td><?php echo $row['product_item_type_name'];?></td>
                                         <td class="d-flex justify-content-around align-items-center">
 
-                                            <button class="editBtn btn btn-secondary" >EDIT</button>
+                                            <button class="editBtn btn btn-secondary btn-sm" >EDIT</button>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="edit_category_product_item_type" tabindex="-1" aria-hidden="true">
@@ -190,7 +194,7 @@
                                                                     
                                                                     <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                                     <!-- <button type="button" class="btn btn-primary">ADD</button> -->
-                                                                    <input type="submit" id="update_category_product_itemTypeBtn" value="UPDATE" class="btn btn-primary">
+                                                                    <input type="submit" id="update_category_product_itemTypeBtn" value="UPDATE" class="btn btn-primary ">
                                                                     <!-- <input type="button" name="" id="editButton" value="EDIT" class="btn btn-primary"> -->
                                                                 </div>
                                                             </form>
@@ -204,7 +208,7 @@
                                             </div>
 
 
-                                            <button type="button" class="btn btn-danger" data-id="<?php echo $row['category_product_item_type_Id'];?>" onclick="confirmDelete(this);">
+                                            <button type="button" class="btn btn-danger btn-sm" data-id="<?php echo $row['category_product_item_type_Id'];?>" onclick="confirmDelete(this);">
                                                 ARCHIVE
                                             </button>
 

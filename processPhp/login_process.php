@@ -7,6 +7,7 @@ if(isset($_POST['action']) && $_POST['action'] == "loginOfficials"){
      $email = $_POST['email'];
     //  $password = sha1($_POST['password']);
     $password = $_POST['password'];
+    $password = sha1($password);
 
     $sql = "SELECT * FROM officials WHERE email_address='$email' AND password='$password'";
     $result = $conn->query($sql);

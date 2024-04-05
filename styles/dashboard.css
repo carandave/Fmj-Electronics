@@ -36,20 +36,20 @@
 }
 
 .main-container{
-    height: 91vh;
+    min-height: 91vh;
     width: 100%;
     display: flex;
 }
 
 .left-container{
-    height: 100%;
+    min-height: 100%;
     width: 20%;
-    background-color: black;
+    background-color: #E4E4E4 !important;
 }
 
 .nav-container{
     width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
     background-color: #E4E4E4 !important;
     display: flex;
     justify-content: center;
@@ -127,6 +127,7 @@
     padding: 25px;
     height: 100%;
     background-color: #606FF2;
+    /* background-color: #606ff2bd; */
     border-radius: 20px;
 }
 

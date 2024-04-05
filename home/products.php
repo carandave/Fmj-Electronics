@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier") {
+        header('Location: dashboard.php');
+    }
+
     $user_type = $_SESSION['user_type'];
 
 ?>
@@ -113,7 +117,18 @@
                                                     <input type="text" id="barcode" name="barcode" class="form-control"  >
                                                 </div>
 
-                                                <div class="mt-2">
+                                                <div class="row mt-1">
+                                                    <div class="col-md-6">
+                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
+                                                        <input type="text" name="stocks" class="form-control" >
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
+                                                        <input type="text" name="prize" class="form-control" >
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div class="mt-2">
                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
                                                     <input type="text" name="stocks" class="form-control" >
                                                 </div>
@@ -121,7 +136,7 @@
                                                 <div class="mt-2">
                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
                                                     <input type="text" name="prize" class="form-control" >
-                                                </div>
+                                                </div> -->
 
                                                 
                                                 
@@ -211,6 +226,11 @@
                                                                     <input type="text" id="edit_item_code" name="edit_item_code" class="form-control" readonly>
                                                                 </div>
 
+                                                                <div class="">
+                                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Bar Code</label>
+                                                                    <input type="text" id="edit_bar_code" name="edit_bar_code" class="form-control" >
+                                                                </div>
+
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Category</label>
                                                                     <input type="text" id="edit_category_Id" name="edit_category_Id" class="form-control" readonly >
@@ -231,9 +251,19 @@
                                                                     <input type="text" id="edit_type_Id" name="edit_type_Id" class="form-control" readonly>
                                                                 </div>
 
-                                                                
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
+                                                                        <input type="text" id="stocks" name="stocks" class="form-control"  >
+                                                                    </div>
 
-                                                                <div class="mt-1">
+                                                                    <div class="col-md-6">
+                                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
+                                                                        <input type="text" id="prize" name="prize" class="form-control" >
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
                                                                     <input type="text" id="stocks" name="stocks" class="form-control"  >
                                                                 </div>
@@ -241,7 +271,7 @@
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
                                                                     <input type="text" id="prize" name="prize" class="form-control" >
-                                                                </div>
+                                                                </div> -->
 
                                                                 <div class="modal-footer">
                                                                     
@@ -260,13 +290,13 @@
                                             </div>
                                             </div>
 
-                                            <form action="category_product.php" method="POST">
+                                            <!-- <form action="category_product.php" method="POST">
                                                 <input type="text" name="categoryId" class="d-none" value="<?php echo $row['category_Id'];?>">
                                                 <input type="text" name="categoryName" class="d-none" value="<?php echo $row['category_Name'];?>">
                                                 <input type="submit" name="categoryBtn" class="btn btn-info btn-sm" value="VIEW">
-                                            </form>
+                                            </form> -->
 
-                                            <button type="button" class="btn btn-danger btn-sm" data-id="<?php echo $row['product_Id'];?>" onclick="confirmDelete(this);">
+                                            <button type="button" class="btn btn-danger btn-sm ml-2" data-id="<?php echo $row['product_Id'];?>" onclick="confirmDelete(this);">
                                                 ARCHIVE
                                             </button>
 
@@ -378,12 +408,13 @@
 
                 $('#edit_product_Id').val(data[0]);
                 $('#edit_item_code').val(data[1]);
-                $('#edit_category_Id').val(data[2]);
-                $('#edit_category_product_Id').val(data[3]);
-                $('#edit_product_type_Id').val(data[4]);
-                $('#edit_type_Id').val(data[5]);
-                $('#stocks').val(data[6]);
-                $('#prize').val(data[7]);
+                $('#edit_bar_code').val(data[2]);
+                $('#edit_category_Id').val(data[3]);
+                $('#edit_category_product_Id').val(data[4]);
+                $('#edit_product_type_Id').val(data[5]);
+                $('#edit_type_Id').val(data[6]);
+                $('#stocks').val(data[7]);
+                $('#prize').val(data[8]);
 
             });
 
@@ -465,6 +496,20 @@
                                 timer: 1500  
                             }).then(function(){
                                 window.location = "./products.php";
+                            })
+
+                        }
+
+                        else if(response == "productExist"){
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'The product already exist in the table!',
+                                showConfirmButton: false,
+                                timer: 1500  
+                            }).then(function(){
+
                             })
 
                         }

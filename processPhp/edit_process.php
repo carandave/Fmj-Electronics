@@ -9,10 +9,12 @@ require_once("../connection.php");
         // $edit_category_product_Id = $_POST['edit_category_product_Id'];
         // $edit_product_type_Id = $_POST['edit_product_type_Id'];
         // $edit_type_Id = $_POST['edit_type_Id'];
+        
+        $edit_bar_code = $_POST['edit_bar_code'];
         $stocks = $_POST['stocks'];
         $prize = $_POST['prize'];
         
-        $sqlu = "UPDATE products SET stocks='$stocks', prize='$prize' WHERE product_Id='$edit_product_Id'";
+        $sqlu = "UPDATE products SET barcode='$edit_bar_code', stocks='$stocks', prize='$prize' WHERE product_Id='$edit_product_Id'";
         $result = $conn->query($sqlu);
 
         if($result){
@@ -116,6 +118,44 @@ require_once("../connection.php");
 
         else{
             echo "error";
+        }
+    }
+    
+    if(isset($_POST['action']) && $_POST['action'] == "editProfile"){
+        $edit_officialId = $_POST['edit_officialId'];
+        $edit_first_name = $_POST['edit_first_name'];
+        $edit_last_name = $_POST['edit_last_name'];
+        $edit_email = $_POST['edit_email'];
+        $edit_password = $_POST['edit_password'];
+        $edit_con_password = $_POST['edit_con_password'];
+
+        if($edit_password == NULL || $edit_con_password == NULL){
+            $sql = "UPDATE officials SET first_name='$edit_first_name', last_name='$edit_last_name', email_address='$edit_email' WHERE officials_Id='$edit_officialId'";
+            $result = $conn->query($sql);
+            if($result){
+                echo "editedSuccess";
+            }
+
+            else{
+                echo "NotSuccess";
+            }
+        }
+        else if(!empty($edit_password) && !empty($edit_con_password)){
+            if($edit_password == $edit_con_password){
+                $edit_password = shaw1($edit_password);
+                $sql = "UPDATE officials SET first_name='$edit_first_name', last_name='$edit_last_name', email_address='$edit_email', password='$edit_password' WHERE officials_Id='$edit_officialId'";
+                $result = $conn->query($sql);
+                if($result){
+                    echo "editedSuccess";
+                }
+
+                else{
+                    echo "NotSuccess";
+                }
+            }
+            else{
+                echo "Mismatch";
+            }
         }
     }
 

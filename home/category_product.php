@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier") {
+        header('Location: dashboard.php');
+    }
+
     $user_type = $_SESSION['user_type'];
 
     
@@ -125,7 +129,7 @@
                                 <thead>
                                     <tr>
                                         <th class="d-none" scope="col">CATEGORY ID</th>
-                                        <th scope="col">PRODUCT ID</th>
+                                        <th scope="col" class="d-none">PRODUCT ID</th>
                                         <th scope="col">PRODUCTS OF <span style="text-transform: uppercase"><?php echo $categoryName?></span></th>
                                         <th scope="col">ACTION</th>
                                     </tr>
@@ -142,7 +146,7 @@
                                         <?php while($row = $result->fetch_assoc()){?>
                                     <tr>
                                         <td class="d-none"><?php echo $row['category_Id'];?></td>
-                                        <td><?php echo $row['category_product_Id'];?></td>
+                                        <td class="d-none"><?php echo $row['category_product_Id'];?></td>
                                         <td><?php echo $row['p_product_Name'];?></td>
                                         <td class="d-flex justify-content-around align-items-center">
 
@@ -151,7 +155,7 @@
                                                 <input type="submit" class="btn btn-secondary" value="EDIT">
                                             </form> -->
 
-                                            <button class="editBtn btn btn-secondary" >EDIT</button>
+                                            <button class="editBtn btn btn-secondary btn-sm" >EDIT</button>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="edit_category_product" tabindex="-1" aria-hidden="true">
@@ -194,10 +198,10 @@
                                                 <input type="text" name="categoryName" class="d-none" value="<?php echo $categoryName;?>">
                                                 <input type="text" name="categoryProductId" class="d-none" value="<?php echo $row['category_product_Id'];?>">
                                                 <input type="text" name="product_Name" class="d-none" value="<?php echo $row['p_product_Name'];?>">
-                                                <input type="submit" name="categoryProductBtn" class="btn btn-info" value="VIEW">
+                                                <input type="submit" name="categoryProductBtn" class="btn btn-info btn-sm" value="VIEW">
                                             </form>
 
-                                            <button type="button" class="btn btn-danger" data-id="<?php echo $row['category_product_Id'];?>" onclick="confirmDelete(this);">
+                                            <button type="button" class="btn btn-danger btn-sm" data-id="<?php echo $row['category_product_Id'];?>" onclick="confirmDelete(this);">
                                                 ARCHIVE
                                             </button>
 

@@ -44,7 +44,7 @@
                             <h1 class="login-header">LOG<span>IN</span></h1>
                             <form id="login-form" class="px-3 d-flex justify-content-center align-items-center" style="flex-direction: column">
                                 <input type="email" name="email" class="input email-input" placeholder="EMAIL">
-                                <input type="password" name="password" class="input password-input mt-3" placeholder="PASSWORD">
+                                <input type="password" name="password" id="password" class="input password-input mt-3" placeholder="PASSWORD">
 
                                 <div class="d-flex justify-content-start ml-4 mt-2" style="width: 100%;">
                                     <a href="forgot_password.php">FORGOT PASSWORD?</a>
@@ -111,7 +111,7 @@
                                     showConfirmButton: false,
                                     timer: 1500  
                                 }).then(function(){
-                                    // window.location = "dashPatient.php";
+                                    window.location = "./home/dashboard.php";
                                 })
 
                             }
@@ -120,12 +120,12 @@
 
                                 Swal.fire({
                                     position: 'center',
-                                    icon: 'warning',
+                                    icon: 'success',
                                     title: 'Successfully Log in as Staff!',
                                     showConfirmButton: false,
                                     timer: 1500  
                                 }).then(function(){
-                                    // window.location = "dashPatient.php";
+                                    window.location = "./home/dashboard.php";
                                 })
 
                             }
@@ -141,6 +141,10 @@
                                 }).then(function(){
                                     // window.location = "dashPatient.php";
                                 })
+
+                                $('#password').val(null);
+
+                                
 
                             }
                         }

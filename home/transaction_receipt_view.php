@@ -8,8 +8,8 @@
         header('Location: ../index.php');
     }
 
-    if(isset($_POST['viewBtn'])){
-        $transactionNo = $_POST['transaction_number'];
+    if(isset($_POST['viewBtn']) || $_GET['transaction_number']){
+        $transactionNo = $_GET['transaction_number'];
     }
 
     $user_type = $_SESSION['user_type'];

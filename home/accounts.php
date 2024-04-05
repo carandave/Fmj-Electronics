@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier" || $_SESSION['user_type']=="Staff") {
+        header('Location: dashboard.php');
+    }
+
     $user_type = $_SESSION['user_type'];
 
 ?>
@@ -105,6 +109,7 @@
                                                     <select name="userType" id="userType" class="form-control" >
                                                         <option value="">Select User Type:</option>
                                                         <option value="Staff">Staff</option>
+                                                        <option value="Cashier">Cashier</option>
                                                         <option value="Admin">Admin</option>
                                                     </select>
                                                 </div>

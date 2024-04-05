@@ -57,29 +57,49 @@
                             <i class="fa-solid fa-layer-group"></i><span>SETTINGS</span>
                         </div>
 
-                        <div class="row mt-3">
-                            <div class="col-md-1">
-                            </div>
-                            <div class="col-md-5 boxs ">
-                                <a href="accounts.php">
-                                    <div class="box-content-containerss">
-                                        <i class="fa-solid fa-user"></i>
-                                        <h3>ACCOUNT</h3>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="col-md-5 boxs">
-                                <a href="transaction_receipt.php">
-                                <div class="box-content-containerss">
-                                    <i class="fa-solid fa-receipt"></i>
-                                    <h3>TRANSACTION RECEIPT</h3>
+                        <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Staff" || $_SESSION['user_type']=="Cashier"){?>
+                            <div class="row mt-3">
+                                <div class="col-md-3">
                                 </div>
-                                </a>
+
+                                <div class="col-md-6 boxs">
+                                    <a href="transaction_receipt.php">
+                                    <div class="box-content-containerss">
+                                        <i class="fa-solid fa-receipt"></i>
+                                        <h3>TRANSACTION RECEIPT</h3>
+                                    </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                </div>
                             </div>
-                            <div class="col-md-1">
+                        <?php } ?>
+
+                        <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Admin"){?>
+                            <div class="row mt-3">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-5 boxs ">
+                                    <a href="accounts.php">
+                                        <div class="box-content-containerss">
+                                            <i class="fa-solid fa-user"></i>
+                                            <h3>ACCOUNT</h3>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-5 boxs">
+                                    <a href="transaction_receipt.php">
+                                    <div class="box-content-containerss">
+                                        <i class="fa-solid fa-receipt"></i>
+                                        <h3>TRANSACTION RECEIPT</h3>
+                                    </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
                             </div>
-                        </div>
+                        <?php } ?>
 
                         
                         

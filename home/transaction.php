@@ -56,7 +56,7 @@
 
                         <form >
 
-                            <div class="row">
+                            <div class="row mt-4">
                                     <div class="col-md-5 pr-0">
 
                                         <div class="row d-none">
@@ -925,7 +925,8 @@
                                             showConfirmButton: false,
                                             timer: 1300  
                                         }).then(function(){
-                                            window.location = "transaction.php";
+                                            // window.location = "transaction.php";
+                                            window.location = "../home/transaction_receipt_view.php?transaction_number="+datas.transactioNumbers;
                                         })
                                 }
 

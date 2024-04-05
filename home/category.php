@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier") {
+        header('Location: dashboard.php');
+    }
+
     $user_type = $_SESSION['user_type'];
 
 ?>
@@ -97,7 +101,7 @@
                             <table class="table table-hover table-border table-sm">
                                 <thead>
                                     <tr>
-                                        <th scope="col">CATEGORY ID</th>
+                                        <th scope="col" class="d-none">CATEGORY ID</th>
                                         <th scope="col">CATEGORY NAME</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
@@ -113,13 +117,13 @@
                                     <?php if($result->num_rows > 0){?>
                                         <?php while($row = $result->fetch_assoc()){?>
                                     <tr>
-                                        <td><?php echo $row['category_Id'];?></td>
+                                        <td class="d-none"><?php echo $row['category_Id'];?></td>
                                         <td><?php echo $row['category_Name'];?></td>
                                         <td class="d-flex justify-content-around align-items-center">
 
                                             <!-- Button trigger modal -->
                                             <!-- <input type="submit" class="btn btn-secondary editBtn" value="EDIT"> -->
-                                            <button class="btn btn-secondary editBtn">EDIT</button>
+                                            <button class="btn btn-secondary btn-sm editBtn">EDIT</button>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="edit_category" tabindex="-1" aria-hidden="true">
@@ -159,10 +163,10 @@
                                             <form action="category_product.php" method="POST">
                                                 <input type="text" name="categoryId" class="d-none" value="<?php echo $row['category_Id'];?>">
                                                 <input type="text" name="categoryName" class="d-none" value="<?php echo $row['category_Name'];?>">
-                                                <input type="submit" name="categoryBtn" class="btn btn-info" value="VIEW">
+                                                <input type="submit" name="categoryBtn" class="btn btn-info btn-sm" value="VIEW">
                                             </form>
 
-                                            <button type="button" class="btn btn-danger" data-id="<?php echo $row['category_Id'];?>" onclick="confirmDelete(this);">
+                                            <button type="button" class="btn btn-danger btn-sm" data-id="<?php echo $row['category_Id'];?>" onclick="confirmDelete(this);">
                                                 ARCHIVE
                                             </button>
 

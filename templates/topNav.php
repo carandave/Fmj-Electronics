@@ -15,6 +15,7 @@
                                 Hi <?php echo $user_type;?> !
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="my_profile.php">My Profile</a>
                             <a class="dropdown-item" href="logout.php">Log out</a>
                             </div>
                         </li>

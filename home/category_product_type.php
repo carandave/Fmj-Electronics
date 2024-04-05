@@ -8,6 +8,10 @@
         header('Location: ../index.php');
     }
 
+    if($_SESSION['user_type']=="Cashier") {
+        header('Location: dashboard.php');
+    }
+
     $user_type = $_SESSION['user_type'];
 
     
@@ -139,7 +143,7 @@
                                     <tr>
                                         <th class="d-none" scope="col">CATEGORY ID</th>
                                         <th class="d-none" scope="col">CATEGORY PRODUCT ID</th>
-                                        <th scope="col">PRODUCT TYPE ID</th>
+                                        <th class="d-none" scope="col">PRODUCT TYPE ID</th>
                                         <th scope="col">PRODUCT TYPES OF <span style="text-transform: uppercase"><?php echo $productName?></span></th>
                                         <th scope="col">ACTION</th>
                                     </tr>
@@ -158,11 +162,11 @@
                                     <tr>
                                         <td class="d-none"><?php echo $row['category_Id'];?></td>
                                         <td class="d-none"><?php echo $row['category_product_Id'];?></td>
-                                        <td><?php echo $row['category_product_item_Id'];?></td>
+                                        <td class="d-none"><?php echo $row['category_product_item_Id'];?></td>
                                         <td><?php echo $row['product_item_name'];?></td>
                                         <td class="d-flex justify-content-around align-items-center">
 
-                                            <button class="editBtn btn btn-secondary" >EDIT</button>
+                                            <button class="editBtn btn btn-secondary btn-sm" >EDIT</button>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="edit_category_product_item" tabindex="-1" aria-hidden="true">
@@ -212,10 +216,10 @@
                                                 <input type="text" name="categoryProductId" class="d-none" value="<?php echo $row['category_product_Id'];?>">
                                                 <input type="text" name="categoryProductItemId" class="d-none" value="<?php echo $row['category_product_item_Id'];?>">
                                                 <input type="text" name="productitemName" class="d-none" value="<?php echo $row['product_item_name'];?>">
-                                                <input type="submit" name="categoryProductTypeBtn" class="btn btn-info" value="VIEW">
+                                                <input type="submit" name="categoryProductTypeBtn" class="btn btn-info btn-sm" value="VIEW">
                                             </form>
 
-                                            <button type="button" class="btn btn-danger" data-id="<?php echo $row['category_product_item_Id'];?>" onclick="confirmDelete(this);">
+                                            <button type="button" class="btn btn-danger btn-sm" data-id="<?php echo $row['category_product_item_Id'];?>" onclick="confirmDelete(this);">
                                                 ARCHIVE
                                             </button>
 

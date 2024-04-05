@@ -13,23 +13,39 @@
         $prize = $_POST['prize'];
         $archive = "No";
 
-        $char = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $itemcode = '';
 
-        for($i = 0; $i < 7; $i++){
-            $itemcode .= $char[rand(0, strlen($char) - 1)];
-        }
-
-        $sqli = "INSERT INTO products (item_code, category_Id, category_product_Id, product_type_Id, type_Id, stocks, prize, archive) VALUES ('$itemcode', '$category_id', '$product_id', '$produt_type_id', '$type_id', '$stocks', '$prize', '$archive')";
-        $result = $conn->query($sqli);
-
-        if($result){
-            echo "addedSuccess";
+        $sqld = "SELECT * FROM products WHERE type_Id='$type_id'";
+        $resultd = $conn->query($sqld);
+        
+        if ($resultd->num_rows > 0) {
+            echo "productExist";
         }
 
         else{
-            echo "error";
+
+            $char = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $itemcode = '';
+
+            for($i = 0; $i < 7; $i++){
+                $itemcode .= $char[rand(0, strlen($char) - 1)];
+            }
+
+            $sqli = "INSERT INTO products (item_code, category_Id, category_product_Id, product_type_Id, type_Id, stocks, prize, archive) VALUES ('$itemcode', '$category_id', '$product_id', '$produt_type_id', '$type_id', '$stocks', '$prize', '$archive')";
+            $result = $conn->query($sqli);
+
+            if($result){
+                echo "addedSuccess";
+            }
+
+            else{
+                echo "error";
+            }
+
         }
+
+
+
+        
     }
 
 
