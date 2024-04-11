@@ -119,82 +119,36 @@
 
             <div class="right-container">
 
-                <div class="row mb-3" >
-                    <div class="col-md-12">
-                        <div class="main-title">
-                            <i class="fa-solid fa-layer-group"></i><span>DASHBOARD </span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row m-0 p-0">
                     <div class="col-md-4 box">
-                        <div class="box-content-container">
-                            <i class="fa-solid fa-user"></i>
-                            <p><?php echo $countusers;?></p>
-                            <h3>Total Users</h3>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 box">
-                        <div class="box-content-container">
-                            <i class="fa-solid fa-layer-group"></i>
-                            <p><?php echo $countcategory;?></p>
-                            <h3>Total Categories</h3>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 box">
-                        <div class="box-content-container">
-                            <i class="fa-solid fa-money-bill-wave"></i>
-                            <p>
-                                <?php 
-                                // $sum = number_format($sum, 2);    
-                                // echo $sum;
-                                echo $total_sales = number_format($total_sales, 2);
-
-                                ?>
-                            </p>
-                            <h3>Total Sales</h3>
-                        </div>
-                    </div>
-
-                    <!-- <div class="col-md-4 box">
-                        <div class="box-content-container">
-                            <i class="fa-solid fa-fire"></i>
-                            <p><?php echo $transaction_Number;?></p>
-                            <h3>Popular Products</h3>
-                        </div>
-                    </div> -->
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <div>
-                            <canvas id="myChart" style="width:100%"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div>
-                            <h3 class="text-center" style="font-size: 19px; font-weight: 600; background-color: #606FF2; padding: 12px 15px; color: white; border-radius: 10px" >POPULAR PRODUCTS</h3>
-                            <div class="box-pop-container">
-                                <?php if($resultpop->num_rows > 0){?>
-                                    <?php while($row = $resultpop->fetch_assoc()){?>
-                                        <div class="box-pop mb-2" style="width: 100%; background-color: #606ff2bd; border-radius: 10px">
-                                            <p class="text-light mb-0 font-weight-bold" style="font-size: 14px;"><?php echo $row['product_item_type_name'];?></p>
-                                        </div>
-                                    <?php  } ?>
-                                <?php  } ?>
+                        <a href="purchase_order_list.php">
+                            <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
+                                <i class="fa-solid fa-truck" style="font-size: 58px; margin-bottom: 10px"></i>
+                                <h3>PURCHASE ORDER</h3>
                             </div>
-                        </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-4 box">
+                        <a href="">
+                            <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
+                                <i class="fa-solid fa-warehouse" style="font-size: 58px; margin-bottom: 10px"></i>
+                                <h3>INVENTORY</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-4 box">
+                        <a href="">
+                            <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
+                                <i class="fa-solid fa-rotate-left" style="font-size: 58px; margin-bottom: 10px"></i>
+                                <h3>RETURN</h3>
+                            </div>
+                        </a>
+                        
                     </div>
                 </div>
-                
 
-
-                
             </div>
         </div>
     
@@ -214,35 +168,6 @@
     <!-- Sweetalert Cdn End -->
 
     <script>
-        // Parse JSON data obtained from PHP
-        var salesData = <?php echo $json_data1; ?>;
-
-        // Prepare data for Chart.js
-        var sales = salesData.map(data => data.total_sales);
-        var years = salesData.map(data => data.year);
-
-        console.log(sales)
-        console.log(years)
-
-        const barColors = ["brown", "green","blue","orange","brown"];
-
-        new Chart("myChart", {
-        type: "bar",
-        data: {
-            labels: years,
-            datasets: [{
-            backgroundColor: barColors,
-            data: sales
-            }]
-        },
-        options: {
-            legend: {display: false},
-            title: {
-            display: true,
-            text: "Sales Report "
-            }
-        }
-        });
 
     </script>
 

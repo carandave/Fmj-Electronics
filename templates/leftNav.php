@@ -40,6 +40,18 @@
         </li>
         <?php } ?>
 
+        <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Admin"){?>
+        <li><a href="inventory.php">
+            <i class="fa-solid fa-warehouse"></i>INVENTORY</a>
+        </li>
+        <?php } ?>
+
+        <?php if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Admin"){?>
+        <li><a href="supplier.php">
+        <i class="fa-solid fa-truck-ramp-box"></i>SUPPLIER</a>
+        </li>
+        <?php } ?>
+
         <li><a href="settings.php">
             <i class="fa-solid fa-gear"></i>SETTINGS</a>
         </li>

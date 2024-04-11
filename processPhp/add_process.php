@@ -190,8 +190,6 @@
     }
 
     // ADD ACOUNT
-
-
     if(isset($_POST['action']) && $_POST['action'] == "addAccount"){
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
@@ -234,6 +232,71 @@
         
 
         
+    }
+
+
+
+    // ADD ACOUNT
+    if(isset($_POST['action']) && $_POST['action'] == "addSupplier"){
+        $name = $_POST['name'];
+        $address = $_POST['address'];
+        $contact_person = $_POST['contact_person'];
+        $contact_no = $_POST['contact_no'];
+        $status = $_POST['status'];
+        // $date_added = date("Y-m-d H:i:s");
+
+        $sqli = "INSERT INTO supplier (name, address, contact_no, contact_person, status) VALUES ('$name', '$address', '$contact_no', '$contact_person', '$status')";
+        $result = $conn->query($sqli);
+
+        if($result){
+            echo "addedSuccess";
+        }
+
+        else{
+            echo "error";
+        }
+    
+    }
+
+
+    // ADD ORDER
+    if(isset($_POST['action']) && $_POST['action'] == "addOrder"){
+
+        $supplier_Id = $_POST['supplier_Id'];
+        $item_dropdownArr = $_POST['item-dropdown'];
+        $no_of_itemArr = $_POST['no_of_item'];
+        $status = "Pending";
+        // $date_added = date("Y-m-d H:i:s");
+
+        $sqli = "INSERT INTO order_purchase (supplier_Id, status) VALUES ('$supplier_Id', '$status')";
+        $result = $conn->query($sqli);
+
+        $queryO = "SELECT order_Id FROM order_purchase ORDER BY order_Id DESC LIMIT 1";
+        $resultO = $conn->query($queryO);
+
+        $rowO = $resultO->fetch_assoc();
+        $row_Id = $rowO['order_Id'];
+
+        // Assuming both arrays have the same length
+        $count = count($item_dropdownArr);
+
+        for ($i = 0; $i < $count; $i++) {
+            $item_dropdown = $item_dropdownArr[$i];
+            $no_of_item = $no_of_itemArr[$i];
+        
+            $sqlitem = "INSERT INTO order_purchase_item (order_Id, item, no_of_item) VALUES ('$row_Id','$item_dropdown', '$no_of_item')";
+            $resultitem = $conn->query($sqlitem);
+        }
+                    
+
+        if($resultitem){
+            echo "addedSuccess";
+        }
+
+        else{
+            echo "error";
+        }
+    
     }
 
 ?>

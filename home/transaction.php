@@ -348,8 +348,8 @@
                             }
                         }
                         
-                        $("#quantity").val(0);
-                        $("#amount").val(0);
+                        $('#quantity').val(1);
+                        $("#amount").val(response[0].prize);
                         $("#itemCode").val(response[0].item_code);
                         $("#price").val(response[0].prize);
                         $("#stocks").val(response[0].stocks);
@@ -357,39 +357,10 @@
                         
                         $('#selectpicker').selectpicker('refresh');
 
-                        $('#quantity').focus();
-                    }
-
-                    // if(response[0].product_Id == ""){
-                    //     alert("Walang aman")
-                    // }
-
-                    // else{
-                    //     alert("Meron aman")
-                    // }
-
-                    // for (var i = 0; i < selectpicker.options.length; i++) {
-                    //     var option = selectpicker.options[i];
                         
-                    //     // Check if the value of the option matches the product_id
-                    //     if (option.value == response[0].product_Id) {
-                    //         // Select the option
-                    //         console.log(option);
-                    //         option.selected = true;
-                    //         break; // Exit the loop since we found the matching option
-                    //     }
-                    // }
-                    
-                    // $("#quantity").val(0);
-                    // $("#amount").val(0);
-                    // $("#itemCode").val(response[0].item_code);
-                    // $("#price").val(response[0].prize);
-                    // $("#stocks").val(response[0].stocks);
-                    // $("#productId").val(response[0].product_Id);
 
-                    // $('#selectpicker').selectpicker('refresh');
-
-                    // $('#quantity').focus();
+                        $('#addItem').click();
+                    }
 
                     
 
@@ -398,44 +369,7 @@
             
         })
 
-        $('#payment').on('change', function(){
-            // let payment = this.value;
-            // console.log(payment)
-            let total = parseInt($('#total').val());
-            let payment = parseInt($('#payment').val());
-            let change = parseInt($('#change').val());
-            
-
-            if(isNaN(payment) || payment < 0){
-                $('#payment').val(0);
-            }
-
-            else if(payment <= total){
-                $('#change').val(payment - total);
-            }
-
-            else if(payment >= total){
-                $('#change').val(payment - total);
-            }
-            
-
-            console.log(payment)
-            
-
-            // let price = parseInt($('#price').val());
-
-            // let amount = (isNaN(quantity)? 0 : quantity) * (isNaN(price)? 0 : price);
-            // $('#amount').val(amount);
-        })
-
-        function confirmDelete(self){
-            var id = self.getAttribute("data-id");
-
-            document.getElementById("form-archive-product").id.value = id;
-            $("#myModal").addClass("animate__fadeInDown");
-            $("#myModal").modal("show");
-            
-        }
+        
 
         var cart = [];
 
@@ -458,17 +392,6 @@
             let amount = parseInt(document.getElementById('amount').value);
             let stocks = parseInt(document.getElementById('stocks').value);
             let product_Id = parseInt(document.getElementById('productId').value);
-            // console.log(price)
-            // console.log(selectedOptionTextPicker)
-            // console.log(quantity)
-            // console.log(itemCode)
-            // console.log(amount)
-
-
-
-            // function addToCart() {
-                // const productName = document.getElementById("productName").value;
-                // const quantity = parseInt(document.getElementById("quantity").value);
 
             if (selectedOptionTextPicker != "Select Item Description" && quantity >= 1) {
                 const item = {
@@ -484,8 +407,6 @@
 
                 cart.push(item);
 
-                
-
                 let hasDuplicates = false;
 
                 for (let i = 0; i < cart.length; i++) {
@@ -500,7 +421,6 @@
                     }
                 }
 
-                // console.log("Array has duplicates:", hasDuplicates);
 
                 if(hasDuplicates === true){
                     Swal.fire({
@@ -542,13 +462,6 @@
 
                         updateCartTable();
 
-                        // let quantity = parseInt(document.getElementById('quantity').value);
-                        // let itemCode = document.getElementById('itemCode').value;
-                        // let amount = parseInt(document.getElementById('amount').value);
-                        // let stocks = parseInt(document.getElementById('stocks').value);
-                        // let product_Id = parseInt(document.getElementById('productId').value);
-
-                        
                         $('#quantity').val(0);
                         $('#price').val(0);
                         $('#stocks').val(0);
@@ -559,9 +472,6 @@
                         // $('#selectpicker').prop('selected', false);
                         $('#selectpicker').val(null);
                         $('#selectpicker').selectpicker('refresh');
-                        
-
-
                         
                     }
 
@@ -616,9 +526,46 @@
                 })
             }
 
-
-
         })
+
+        $('#payment').on('change', function(){
+            // let payment = this.value;
+            // console.log(payment)
+            let total = parseInt($('#total').val());
+            let payment = parseInt($('#payment').val());
+            let change = parseInt($('#change').val());
+            
+
+            if(isNaN(payment) || payment < 0){
+                $('#payment').val(0);
+            }
+
+            else if(payment <= total){
+                $('#change').val(payment - total);
+            }
+
+            else if(payment >= total){
+                $('#change').val(payment - total);
+            }
+            
+
+            console.log(payment)
+            
+
+            // let price = parseInt($('#price').val());
+
+            // let amount = (isNaN(quantity)? 0 : quantity) * (isNaN(price)? 0 : price);
+            // $('#amount').val(amount);
+        })
+
+        function confirmDelete(self){
+            var id = self.getAttribute("data-id");
+
+            document.getElementById("form-archive-product").id.value = id;
+            $("#myModal").addClass("animate__fadeInDown");
+            $("#myModal").modal("show");
+            
+        }
 
         
 

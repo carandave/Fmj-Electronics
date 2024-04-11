@@ -159,4 +159,41 @@ require_once("../connection.php");
         }
     }
 
+
+    if(isset($_POST['action']) && $_POST['action'] == "editSupplier"){
+        $edit_supplier_Id = $_POST['edit_supplier_Id'];
+        $edit_name = $_POST['edit_name'];
+        $edit_address = $_POST['edit_address'];
+        $edit_contact_person = $_POST['edit_contact_person'];
+        $edit_contact_no = $_POST['edit_contact_no'];
+        $edit_status = $_POST['edit_status'];
+
+        
+        $sql = "UPDATE supplier SET name='$edit_name', address='$edit_address', contact_no='$edit_contact_no', contact_person='$edit_contact_person', status='$edit_status' WHERE supplier_Id='$edit_supplier_Id'";
+        $result = $conn->query($sql);
+        if($result){
+            echo "editedSuccess";
+        }
+
+        else{
+            echo "NotSuccess";
+        }
+    }
+
+
+    if(isset($_POST['action']) && $_POST['action'] == "editPurchaseOrder"){
+        $edit_purchaseOrderId = $_POST['edit_purchaseOrderId'];
+        $status_batch = $_POST['status_batch'];
+        
+        $sql = "UPDATE order_purchase SET status='$status_batch' WHERE order_Id='$edit_purchaseOrderId'";
+        $result = $conn->query($sql);
+        if($result){
+            echo "editedSuccess";
+        }
+
+        else{
+            echo "NotSuccess";
+        }
+    }
+
 ?>
