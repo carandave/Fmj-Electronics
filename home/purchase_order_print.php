@@ -55,7 +55,7 @@
                 <div class="row m-0 p-0">
                     <div class="col-md-12">
                         <div class="main-title">
-                            <i class="fa-solid fa-layer-group"></i><span>REPORTS </span>
+                            <i class="fa-solid fa-layer-group"></i><span>PURCHASE ORDER REPORTS </span>
                         </div>
                     </div>
   
@@ -67,11 +67,11 @@
                         <div class="card ">
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="card-title mb-0 mr-3">Print Reports</h5>
+                                <h5 class="card-title mb-0 mr-3">Print Purchase Order Reports</h5>
 
                                 <div>
 
-                                <a href="reports.php" class="btn btn-secondary text-light" >
+                                <a href="purchase_order_list.php" class="btn btn-secondary text-light" >
                                     Back
                                 </a>
 
@@ -119,19 +119,18 @@
                             <div class="row px-5 mt-5" style="width: 100%; margin: 0 auto;">
 
                                     <?php 
-                                            
-                                    $sql = "SELECT * FROM transactions_table GROUP BY transaction_Number ORDER BY transaction_Id DESC";
-                                    $result = $conn->query($sql);
-                                    $num = 1;
+                                        // $sql = "SELECT o.order_Id, o.supplier_Id, o.item, o.no_of_item, o.status, o.date_created, s.supplier_Id, s.name, p.product_Id, p.type_Id, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM order_purchase o INNER JOIN supplier s ON o.supplier_Id = s.supplier_Id INNER JOIN products p ON o.item = p.product_Id INNER JOIN category_product_item_type_table cpit ON cpit.category_product_item_type_Id = p.type_Id ORDER BY order_Id DESC";
+                                        $sql = "SELECT o.order_Id, o.supplier_Id, o.status, o.date_created, s.supplier_Id, s.name FROM order_purchase o INNER JOIN supplier s ON o.supplier_Id = s.supplier_Id ORDER BY order_Id DESC";
+                                        $result = $conn->query($sql);
                                     ?>
 
                                     <table class="table table-hover table-border table-sm">
                                         <thead>
                                             <tr>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">#</th>
-                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">TRANSACTION NO.</th>
-                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">TOTAL AMOUNT</th>
-                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">TIME AND DATE</th>
+                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">DATE CREATED</th>
+                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">SUPPLIER</th>
+                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">STATUS</th>
                                             </tr>
                                         </thead>
                                         <tbody id="cartTable">
@@ -139,19 +138,18 @@
                                             
                                             
                                             <?php if($result->num_rows > 0){?>
-                                                <?php while($row = $result->fetch_assoc()){?>
+                                                <?php 
+                                                $x = 1;
+                                                while($row = $result->fetch_assoc()){
+                                                ?>
                                             <tr>
-                                                <td class="text-center" style="font-size: 20px;">
-                                                    <?php 
-                                                    echo $num;
-                                                    ?>
-                                                </td>
-                                                <td class="text-center" style="font-size: 20px;" ><?php echo $row['transaction_Number'];?></td>
-                                                <td class="text-center" style="font-size: 20px;"><?php echo $row['final_total_amount'];?></td>
-                                                <td class="text-center" style="font-size: 20px;"><?php echo date("F j Y, h:i:s", strtotime($row['date_added']));?></td>
+                                                <td class="text-center" style="font-size: 20px;" ><?php echo $x;?></td>
+                                                <td class="text-center" style="font-size: 20px;"><?php echo date("F j Y", strtotime($row['date_created']));?></td>
+                                                <td class="text-center" style="font-size: 20px;"><?php echo $row['name'];?></td>
+                                                <td class="text-center" style="font-size: 20px;"><?php echo $row['status'];?></td>
                                             </tr>
                                                 <?php 
-                                                $num++;
+                                                $x++;
                                                 } ?>
                                             <?php } ?>
                                         </tbody>

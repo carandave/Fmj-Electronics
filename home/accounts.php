@@ -63,9 +63,13 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12">
+                                <a href="settings.php" class="btn btn-dark text-light" >
+                                Back
+                                </a>
+
                                 <?php 
                                 
-                                    $sql = "SELECT * FROM officials ORDER BY officials_Id DESC";
+                                    $sql = "SELECT * FROM officials WHERE status='Active' ORDER BY officials_Id DESC";
                                     $result = $conn->query($sql);
                                 ?>
 
@@ -148,12 +152,14 @@
                                     <table class="table table-hover table-border table-sm">
                                         <thead>
                                             <tr>
-                                                <th scope="col" class="text-center d-none" style="font-size: 20px; font-weight: 700">ID</th>
+                                                <th scope="col" class="text-center  d-none" style="font-size: 20px; font-weight: 700">ID</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">FIRST NAME</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">LAST NAME</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">EMAIL</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">USER TYPE</th>
+                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">STATUS</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">DATE CREATED</th>
+                                                <th scope="col" class="text-center d-none" style="font-size: 20px; font-weight: 700">PASSWORD</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ACTION</th>
                                             </tr>
                                         </thead>
@@ -167,13 +173,15 @@
                                                 <td class="text-center" style="font-size: 20px;"><?php echo $row['last_name'];?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo $row['email_address'];?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo $row['user_type'];?></td>
+                                                <td class="text-center" style="font-size: 20px;"><?php echo $row['status'];?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo date("F j Y", strtotime($row['date_created']));?></td>
+                                                <td class="text-center d-none" style="font-size: 20px;"><?php echo $row['password'];?></td>
                                                 <td class="d-flex justify-content-center align-items-center">
-                                                    <button type="button" class="btn btn-secondary editBtn" data-toggle="modal" data-target="#edit<?php echo $row['officials_Id'];?>"> EDIT</button>
+                                                    <button type="button" class="btn btn-secondary editBtn" > EDIT</button>
                                                 </td>
 
                                                 <!-- Modal -->
-                                            <div class="modal fade" id="edit<?php echo $row['officials_Id'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="edit_account" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                     <div class="modal-header">
@@ -186,23 +194,23 @@
                                                         <form id="edit-form">
                                                             <div class="row">
 
-                                                                <input type="text" value="<?php echo $row['officials_Id'];?>" name="edit_officials_Id" id="officials_Id " class="form-control d-none " >
 
                                                                 <div class="col-md-6">
+                                                                <input type="text" name="edit_officials_Id" id="edit_officials_Ids " class="edit_officials_Ids form-control d-none" >
                                                                     <label for="">First Name</label>
-                                                                    <input type="text" value="<?php echo $row['first_name'];?>" name="edit_first_name" id="first_name" class="form-control" >
+                                                                    <input type="text" name="edit_first_name" id="edit_first_name" class="form-control" >
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label for="">Last Name</label>
-                                                                    <input type="text" value="<?php echo $row['last_name'];?>" name="edit_last_name" id="last_name" class="form-control" >
+                                                                    <input type="text" name="edit_last_name" id="edit_last_name" class="form-control" >
                                                                 </div>
                                                             </div>
 
-
+                                                            
                                                             <div class="row mt-3">
                                                                 <div class="col-md-12">
                                                                     <label for="">Email</label>
-                                                                    <input type="email" value="<?php echo $row['email_address'];?>" name="edit_email_address" id="email_address" class="form-control" >
+                                                                    <input type="email" name="edit_email_address" id="edit_email_address" class="form-control" >
                                                                 </div>
                                                             </div>
 
@@ -210,8 +218,8 @@
                                                                 <div class="col-md-12">
                                                                     <label for="">Select User Type</label>
                                                                     <!-- <input type="text" value="" id="status" class="form-control" > -->
-                                                                    <select name="edit_userType" id="userType" class="form-control" >
-                                                                        <option value="<?php echo $row['user_type'];?>"><?php echo $row['user_type'];?></option>
+                                                                    <select name="edit_userType" id="edit_userType" class="form-control" >
+                                                                        <option value="Cashier">Cashier</option>
                                                                         <option value="Staff">Staff</option>
                                                                         <option value="Admin">Admin</option>
                                                                     </select>
@@ -220,8 +228,26 @@
 
                                                             <div class="row mt-3">
                                                                 <div class="col-md-12">
+                                                                    <label for="">Select Status</label>
+                                                                    <!-- <input type="text" value="" id="status" class="form-control" > -->
+                                                                    <select name="edit_status" id="edit_status" class="form-control" >
+                                                                        <option value="Active">Active</option>
+                                                                        <option value="Inactive">Inactive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-3">
+                                                                <div class="col-md-12">
+                                                                    <label for="">Password</label>
+                                                                    <input type="password" name="edit_password" id="edit_password" class="form-control" >
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-3">
+                                                                <div class="col-md-12">
                                                                     <label for="">Date Created</label>
-                                                                    <input type="text" value="<?php echo $row['date_created'];?>" name="capacity" id="capacity" class="form-control" readonly="true">
+                                                                    <input type="text" name="date_created" id="edit_date_created" class="form-control" readonly="true">
                                                                 </div>
                                                             </div>
 
@@ -229,7 +255,7 @@
                                                             <div class="modal-footer">
                                                                 <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
                                                                 <!-- <button type="button" class="btn btn-primary">Save</button> -->
-                                                                <input type="submit" name="editBtn" id="editBtn" value="Update" class="btn btn-info">
+                                                                <input type="submit" name="editBtn" id="updateBtn" value="Update" class="btn btn-info">
 
                                                                 <!-- Dito na tayo sa form ang pag eedit ng status  -->
                                                             </div>
@@ -274,6 +300,38 @@
     <script>
 
         $(document).ready(function(){
+
+            $('.editBtn').on('click', function(){
+                console.log("Clikced")
+                $('#edit_account').modal('show');
+
+                $tr = $(this).closest('tr');
+
+                var data = $tr.children("td").map(function(){
+                    return $(this).text();
+                }).get();
+
+                console.log(data)
+
+
+                $('.edit_officials_Ids').val(data[0]);
+                $('#edit_first_name').val(data[1]);
+                $('#edit_last_name').val(data[2]);
+                $('#edit_email_address').val(data[3]);
+                $('#edit_userType').val(data[4]);
+                $('#edit_status').val(data[5]);
+
+                $('#edit_userType option').filter(function() {
+                    return $(this).text() === data[4];
+                }).prop('selected', true);
+
+                $('#edit_status option').filter(function() {
+                    return $(this).text() === data[5];
+                }).prop('selected', true);
+
+                $('#edit_date_created').val(data[6]);
+                $('#edit_password').val(data[7]);
+            });
 
             $("#addBtn").click(function(e){
             console.log("napindot");
@@ -325,13 +383,23 @@
                             timer: 3000  
                         })
                     }
+
+                    else if(response == "fieldrequired"){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'All fields are required. Please try again Thankyou!',
+                            showConfirmButton: false,
+                            timer: 3000  
+                        })
+                    }
                 }
             })
 
         })
 
             // console.log("Hello World")
-        $("#editBtn").click(function(e){
+        $("#updateBtn").click(function(e){
             console.log("napindot");
             e.preventDefault();
 

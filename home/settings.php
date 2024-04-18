@@ -52,6 +52,41 @@
 
             <div class="right-container">
                 <div class="row m-0 p-0">
+                    <div class="col-md-4 box">
+                        <a href="transaction_receipt.php">
+                            <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
+                                <i class="fa-solid fa-receipt" style="font-size: 58px; margin-bottom: 10px"></i>
+                                <h3>TRANSACTION RECEIPT</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <?php if($_SESSION['user_type']=="Admin") {?>
+                    <div class="col-md-4 box">
+                        <a href="accounts.php">
+                            <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
+                                <i class="fa-solid fa-user" style="font-size: 58px; margin-bottom: 10px"></i>
+                                <h3>ACCOUNTS</h3>
+
+                            </div>
+                        </a>
+                    </div>
+                    <?php } ?>
+                    
+                    <?php if($_SESSION['user_type']=="Admin") {?>
+                    <div class="col-md-4 box">
+                        <a href="archive.php">
+                            <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
+                                <i class="fa-solid fa-archive" style="font-size: 58px; margin-bottom: 10px"></i>
+                                <h3>ARCHIVES</h3>
+                            </div>
+                        </a>
+                        
+                    </div>
+                    <?php } ?>
+                </div>
+
+                <!-- <div class="row m-0 p-0">
                     <div class="col-md-12">
                         <div class="main-title">
                             <i class="fa-solid fa-layer-group"></i><span>SETTINGS</span>
@@ -104,7 +139,7 @@
                         
                         
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     

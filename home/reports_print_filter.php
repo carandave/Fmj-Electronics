@@ -81,6 +81,10 @@
 
                                 <div>
 
+                                <a href="reports.php" class="btn btn-secondary text-light" >
+                                    Back
+                                </a>
+
                                 <button class="btn btn-success btn-border btn-round" onclick="printDiv('printThis')">
                                     Print
                                 </button>

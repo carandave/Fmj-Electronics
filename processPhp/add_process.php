@@ -13,35 +13,43 @@
         $prize = $_POST['prize'];
         $archive = "No";
 
-
-        $sqld = "SELECT * FROM products WHERE type_Id='$type_id'";
-        $resultd = $conn->query($sqld);
-        
-        if ($resultd->num_rows > 0) {
-            echo "productExist";
+        if(empty($category_id) || empty($product_id) || empty($produt_type_id) || empty($type_id) || empty($stocks) || empty($prize)){
+            echo "fieldRequired";
         }
 
         else{
-
-            $char = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $itemcode = '';
-
-            for($i = 0; $i < 7; $i++){
-                $itemcode .= $char[rand(0, strlen($char) - 1)];
+            $sqld = "SELECT * FROM products WHERE type_Id='$type_id'";
+            $resultd = $conn->query($sqld);
+            
+            if ($resultd->num_rows > 0) {
+                echo "productExist";
             }
-
-            $sqli = "INSERT INTO products (item_code, category_Id, category_product_Id, product_type_Id, type_Id, stocks, prize, archive) VALUES ('$itemcode', '$category_id', '$product_id', '$produt_type_id', '$type_id', '$stocks', '$prize', '$archive')";
-            $result = $conn->query($sqli);
-
-            if($result){
-                echo "addedSuccess";
-            }
-
+    
             else{
-                echo "error";
+    
+                $char = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $itemcode = '';
+    
+                for($i = 0; $i < 7; $i++){
+                    $itemcode .= $char[rand(0, strlen($char) - 1)];
+                }
+    
+                $sqli = "INSERT INTO products (item_code, category_Id, category_product_Id, product_type_Id, type_Id, stocks, prize, archive) VALUES ('$itemcode', '$category_id', '$product_id', '$produt_type_id', '$type_id', '$stocks', '$prize', '$archive')";
+                $result = $conn->query($sqli);
+    
+                if($result){
+                    echo "addedSuccess";
+                }
+    
+                else{
+                    echo "error";
+                }
+    
             }
-
         }
+
+
+        
 
 
 
@@ -130,61 +138,68 @@
         $carts = $_POST['carts'];
         $totalAmount = $_POST['totals'];
         $payments = $_POST['payments'];
+        $payment_method = $_POST['payment_methods'];
         $changes = $_POST['changes'];
         $transactioNumbers = $_POST['transactioNumbers'];
 
-
-        // print_r($carts);
-
-        foreach($carts as $item){
-
-             $transactionNo =  $item["transactionNo"];
-             $product_Id =  $item["product_Id"]; 
-             $selectedOptionTextPicker =  $item["selectedOptionTextPicker"]; 
-             $itemCode =  $item["itemCode"]; 
-             $price =  $item["price"]; 
-             $stocks =  $item["stocks"]; 
-             $quantity =  $item["quantity"];
-             $amount =  $item["amount"];
-             $date_added = date("Y-m-d H:i:s");
+        if($totalAmount <= $payments){
             
+            foreach($carts as $item){
 
-            // $sqli = "INSERT INTO transactions_table (transaction_Number, product_Id, item_code, qty, price, total_amount, final_total_amount, payment, change, date_added) VALUES ('$transactionNo', '$product_Id', '$itemCode', '$quantity', '$price', '$amount', '$totalAmount', '$payments', '$changes', '$date_added')";
-            $sqli = "INSERT INTO `transactions_table` (`transaction_Number`, `product_Id`, `item_code`, `qty`, `price`, `total_amount`, `final_total_amount`, `payment`, `change`, `date_added`) VALUES ('$transactioNumbers', '$product_Id', '$itemCode', '$quantity', '$price', '$amount', '$totalAmount', '$payments', '$changes', '$date_added')";
-            $resulti = $conn->query($sqli);
+                $transactionNo =  $item["transactionNo"];
+                $product_Id =  $item["product_Id"]; 
+                $selectedOptionTextPicker =  $item["selectedOptionTextPicker"]; 
+                $itemCode =  $item["itemCode"]; 
+                $price =  $item["price"]; 
+                $stocks =  $item["stocks"]; 
+                $quantity =  $item["quantity"];
+                $amount =  $item["amount"];
+                $date_added = date("Y-m-d H:i:s");
+                
 
-            if($resulti){
+                $sqli = "INSERT INTO `transactions_table` (`transaction_Number`, `product_Id`, `item_code`, `qty`, `price`, `total_amount`, `final_total_amount`, `payment`, `payment_method`, `change`, `date_added`) VALUES ('$transactioNumbers', '$product_Id', '$itemCode', '$quantity', '$price', '$amount', '$totalAmount', '$payments', '$payment_method', '$changes', '$date_added')";
+                $resulti = $conn->query($sqli);
 
-                $newStocks = $stocks - $quantity;
+                if($resulti){
 
-                $sqlu = "UPDATE products SET stocks='$newStocks' WHERE product_Id='$product_Id'";
-                $resultu = $conn->query($sqlu);
+                    $newStocks = $stocks - $quantity;
+
+                    $sqlu = "UPDATE products SET stocks='$newStocks' WHERE product_Id='$product_Id'";
+                    $resultu = $conn->query($sqlu);
+
+                }
+        
+                else{
+                    echo "error";
+                }
+            }
+
+            if($resultu){
+
+                session_start();
+
+                $officials_Id = $_SESSION['officials_Id'];
+
+                $action = "Added Transaction";
+
+                $sqli = "INSERT INTO audit_trail_table (action, officials_Id) VALUES ('$action', '$officials_Id')";
+                $result = $conn->query($sqli);
+
+                echo "addedSuccess";
 
             }
-    
+
             else{
                 echo "error";
             }
         }
 
-        if($resultu){
-
-            session_start();
-
-            $officials_Id = $_SESSION['officials_Id'];
-
-            $action = "Added Transaction";
-
-            $sqli = "INSERT INTO audit_trail_table (action, officials_Id) VALUES ('$action', '$officials_Id')";
-            $result = $conn->query($sqli);
-
-            echo "addedSuccess";
-
-        }
-
         else{
-            echo "error";
+            echo "Errorpayment";
         }
+
+
+        
 
          
     }
@@ -197,37 +212,48 @@
         $password = $_POST['password'];
         $cpassword = $_POST['cpassword'];
         $user_type = $_POST['userType'];
+        $status = "Active";
         $date_added = date("Y-m-d H:i:s");
 
-        $sql = "SELECT email_address FROM officials WHERE email_address = '$email_address'";
-        $results = $conn->query($sql);
-
-        if($results->num_rows == 1){
-            echo "sameemail";
+        if(empty($first_name) || empty($last_name) || empty($email_address) || empty($password) || empty($cpassword) || empty($user_type)){
+            echo "fieldrequired";
         }
 
         else{
 
-            if($password == $cpassword){
-                $password = sha1($password);
-    
-                $sqli = "INSERT INTO officials (first_name, last_name, email_address, password, user_type, date_created) VALUES ('$first_name', '$last_name', '$email_address', '$password', '$user_type', '$date_added')";
-                $result = $conn->query($sqli);
-    
-                if($result){
-                    echo "addedSuccess";
-                }
-    
-                else{
-                    echo "error";
-                }
+            $sql = "SELECT email_address FROM officials WHERE email_address = '$email_address'";
+            $results = $conn->query($sql);
+
+            if($results->num_rows == 1){
+                echo "sameemail";
             }
-    
+
             else{
-                echo "NotEqual";
+
+                if($password == $cpassword){
+                    $password = sha1($password);
+        
+                    $sqli = "INSERT INTO officials (first_name, last_name, email_address, password, user_type, status, date_created) VALUES ('$first_name', '$last_name', '$email_address', '$password', '$user_type', '$status', '$date_added')";
+                    $result = $conn->query($sqli);
+        
+                    if($result){
+                        echo "addedSuccess";
+                    }
+        
+                    else{
+                        echo "error";
+                    }
+                }
+        
+                else{
+                    echo "NotEqual";
+                }
+
             }
 
         }
+
+        
 
         
 
@@ -245,16 +271,24 @@
         $status = $_POST['status'];
         // $date_added = date("Y-m-d H:i:s");
 
-        $sqli = "INSERT INTO supplier (name, address, contact_no, contact_person, status) VALUES ('$name', '$address', '$contact_no', '$contact_person', '$status')";
-        $result = $conn->query($sqli);
-
-        if($result){
-            echo "addedSuccess";
+        if(empty($name) || empty($address) || empty($contact_person) || empty($contact_no) || empty($status)){
+            echo "emptyFields";
         }
 
         else{
-            echo "error";
+            $sqli = "INSERT INTO supplier (name, address, contact_no, contact_person, status) VALUES ('$name', '$address', '$contact_no', '$contact_person', '$status')";
+            $result = $conn->query($sqli);
+
+            if($result){
+                echo "addedSuccess";
+            }
+
+            else{
+                echo "error";
+            }
         }
+
+        
     
     }
 
@@ -266,6 +300,8 @@
         $item_dropdownArr = $_POST['item-dropdown'];
         $no_of_itemArr = $_POST['no_of_item'];
         $status = "Pending";
+        $statusBatch = "Processing";
+        $updated = "No";
         // $date_added = date("Y-m-d H:i:s");
 
         $sqli = "INSERT INTO order_purchase (supplier_Id, status) VALUES ('$supplier_Id', '$status')";
@@ -284,7 +320,7 @@
             $item_dropdown = $item_dropdownArr[$i];
             $no_of_item = $no_of_itemArr[$i];
         
-            $sqlitem = "INSERT INTO order_purchase_item (order_Id, item, no_of_item) VALUES ('$row_Id','$item_dropdown', '$no_of_item')";
+            $sqlitem = "INSERT INTO order_purchase_item (order_Id, item, no_of_item, status, updated) VALUES ('$row_Id','$item_dropdown', '$no_of_item', '$statusBatch', '$updated')";
             $resultitem = $conn->query($sqlitem);
         }
                     

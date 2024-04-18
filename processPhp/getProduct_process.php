@@ -12,7 +12,7 @@ if(isset($_POST['category_ids'])){
 
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            echo '<option value="'. $row["category_product_Id"].'" class="font-weight-bold" style="font-size:18px;">'. $row["category_product_Id"].''.$row["product_Name"].'</option>';
+            echo '<option value="'. $row["category_product_Id"].'" class="font-weight-bold" style="font-size:18px;">'.$row["product_Name"].'</option>';
         }
     }
 }

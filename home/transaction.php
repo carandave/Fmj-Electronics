@@ -140,7 +140,7 @@
 
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="transactionBtn" id="addItem">ADD ITEM</button>
+                                    
                                 </div>
                             </div>
 
@@ -152,7 +152,7 @@
                                         </div>
 
                                         <div class="col-md-7">
-                                            <select name="item-dropdown" id="selectpicker" data-live-search="true" class="form-control" style="background-color: lightgray; color: black; font-size: 20px; text-align: center; font-weight: 800; ">
+                                            <select name="item-dropdown" id="selectpicker" data-live-search="true" class="form-control font-weight-bold" style="background-color: lightgray; color: black; font-size: 20px; text-align: center; font-weight: 800; ">
                                                 <option value="">Select Item Description</option>
                                                 <?php 
                                                     $sqlp = "SELECT p.product_Id, p.item_code, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
@@ -185,7 +185,7 @@
 
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="scanBtn">SCAN</button>
+                                    
                                 </div>
                             </div>
 
@@ -214,7 +214,7 @@
 
                                 </div>
                                 <div class="col-md-2">
-                                    
+                                <button type="button" class="transactionBtn" id="addItem">ADD ITEM</button>
                                 </div>
                             </div>
 
@@ -242,7 +242,21 @@
 
                             <div class="row ml-1" >
                                 <div class="col-md-5 p-3" style="background-color: #606FF2; border-radius: 5px">
-                                    <div class="row ">
+                                    <div class="row mt-2">
+                                        <div class="col-md-6 d-flex justify-content-center">
+                                            <label for="" class="mb-0 font-weight-bold" style="background-color: #0012b1; width: 100%; text-align: center; font-size: 20px; color: white">Payment Method:</label>
+                                        </div>
+                                        <div class="col-md-6 pl-0">
+                                            <select name="payment_method" id="payment_method" class="form-control text-center font-weight-bold">
+                                                <option value="CASH" class="">CASH</option>
+                                                <option value="GCASH">GCASH</option>
+                                                <option value="PAYMAYA">PAYMAYA</option>
+                                                <option value="PAYPAL">PAYPAL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
                                         <div class="col-md-6 d-flex justify-content-center">
                                             <label for="" class="mb-0 font-weight-bold"  style="background-color: #0012b1; width: 100%; text-align: center; font-size: 20px; color: white">Total:</label>
                                         </div>
@@ -250,6 +264,8 @@
                                             <input type="text" id="total" value="0" class="form-control-sm form-control" style="color: black; font-size: 18px; text-align: center; font-weight: 600; " readonly>
                                         </div>
                                     </div>
+
+                                    
 
                                     <div class="row mt-2">
                                         <div class="col-md-6 d-flex justify-content-center">
@@ -804,6 +820,8 @@
                 e.preventDefault();
 
                 let payment = document.getElementById('payment').value;
+                let payment_method = document.getElementById('payment_method');
+
                 console.log(payment)
                 if(parseInt(payment) <= 0 ){
                     Swal.fire({
@@ -823,6 +841,7 @@
                     var datas = {
                         carts: cart,
                         transactioNumbers: transactionNo.value,
+                        payment_methods: payment_method.value,
                         totals: total.value,
                         payments: payment,
                         changes: change.value
@@ -841,21 +860,6 @@
                     }
 
                     else{
-                        console.log(datas)
-
-                        if(datas.payments < datas.totals){
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'error',
-                                title: 'Make sure the Total Amount is greater than the payment, Please try again',
-                                showConfirmButton: false,
-                                timer: 3000  
-                            }).then(function(){
-                            })
-                            return;
-                        }
-
-                        else{
 
                             $.ajax({
                             url: "../processPhp/add_process.php",
@@ -877,6 +881,18 @@
                                         })
                                 }
 
+                                else if(response == "Errorpayment"){
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'error',
+                                            title: 'Make sure the Total Amount is greater than the payment, Please try again',
+                                            showConfirmButton: false,
+                                            timer: 1300  
+                                        }).then(function(){
+                                            // window.location = "transaction.php";
+                                        })
+                                }
+
                                 else if(response == "error"){
                                         Swal.fire({
                                             position: 'center',
@@ -890,8 +906,6 @@
                                 }
                             }
                             })
-
-                        }
 
                         
                     }

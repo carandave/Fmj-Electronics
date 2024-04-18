@@ -10,6 +10,10 @@
 
     $user_type = $_SESSION['user_type'];
 
+    if($_SESSION['user_type']=="Cashier"  || $_SESSION['user_type']=="Staff") {
+        header('Location: dashboard.php');
+    }
+
 
     // TOTAL USERS
     $sqlu = "SELECT * FROM officials";
@@ -130,7 +134,7 @@
                     </div>
 
                     <div class="col-md-4 box">
-                        <a href="">
+                        <a href="inventory_view.php">
                             <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
                                 <i class="fa-solid fa-warehouse" style="font-size: 58px; margin-bottom: 10px"></i>
                                 <h3>INVENTORY</h3>
@@ -139,7 +143,7 @@
                     </div>
 
                     <div class="col-md-4 box">
-                        <a href="">
+                        <a href="return_view_list.php">
                             <div class="box-content-container d-flex justify-content-center align-items-center" style="flex-direction: column">
                                 <i class="fa-solid fa-rotate-left" style="font-size: 58px; margin-bottom: 10px"></i>
                                 <h3>RETURN</h3>

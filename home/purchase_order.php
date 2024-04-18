@@ -69,16 +69,21 @@
                                 <div class="table-container mt-3">
 
                                     <div class="row mt-3">
-                                        <div class="col-md-9">
+                                        <div class="col-md-3">
+                                            <a href="purchase_order_list.php" class="btn btn-dark text-light" >
+                                                Back
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
 
                                         </div>
-
-                                        <div class="col-md-3">
+                                        
+                                        <div class="col-md-3 ">
                                             <input type="button" onclick="" class="addOrder btn btn-dark  mb-0 mt-2 p-1" style="border: 0; cursor: pointer; width: 100%;" value="ADD ORDER" id="addOrder">
                                         </div>
                                     </div>
 
-                                    <form id="add-form">
+                                    <form id="add-form" class="mt-3">
                                         <div class="row">
 
                                             <div class="col-md-12">
@@ -86,7 +91,7 @@
                                                 <select name="supplier_Id" class="form-control" style="" >
                                                     <option value="">Select Supplier</option>
                                                     <?php 
-                                                        $sqlp = "SELECT * FROM supplier";
+                                                        $sqlp = "SELECT * FROM supplier WHERE status='Active'";
                                                         $resultp = $conn->query($sqlp);
 
                                                         if($resultp->num_rows > 0){
@@ -106,14 +111,14 @@
                                             <div class="col-md-8">
                                                 <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product</label>
                                                 <select name="item-dropdown[]" id="selectpicker" data-live-search="true" class="form-control" style="">
-                                                    <option value="">Select Item</option>
+                                                    <option value="" class="text-center">Select Item</option>
                                                     <?php 
                                                         $sqlp = "SELECT p.product_Id, p.item_code, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
                                                         $resultp = $conn->query($sqlp);
 
                                                         if($resultp->num_rows > 0){
                                                             while($rowsp = $resultp->fetch_assoc()){
-                                                                echo '<option value="'.$rowsp['product_Id'].'" style="text-align-center;">'.$rowsp['product_item_type_name'].'</option>';
+                                                                echo '<option value="'.$rowsp['product_Id'].'" style="text-align-center;"  class="text-center">'.$rowsp['product_item_type_name'].'</option>';
                                                             }
                                                         }
                                                     ?>
@@ -177,41 +182,94 @@
             $("#addOrder").click(function(e){
             e.preventDefault();
 
+            var selectedOptions = [];
+            $('select[name="item-dropdown[]"]').each(function() {
+                var selectedOption = $(this).val();
+                if (selectedOption !== "") {
+                    selectedOptions.push(selectedOption);
+                }
+            });
+
             console.log("Napindot si CheckVoucherBtn")
 
-            $("#divNextPurchaseOrder").append(
-                `
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product</label>
-                        <select name="item-dropdown[]" id="selectpicker" data-live-search="true" class="form-control selectpicker" style="">
-                            <option value="">Select Item</option>
-                            <?php 
-                                $sqlp = "SELECT p.product_Id, p.item_code, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
-                                $resultp = $conn->query($sqlp);
+            // Fetch product options using AJAX
+            $.ajax({
+                url: '../processPhp/get_productsOrder.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var optionsHtml = '<option value="">Select Item</option>';
+                    data.forEach(function(product) {
+                        if (!selectedOptions.includes(product.product_Id)) {
+                            optionsHtml += '<option value="' + product.product_Id + '" style="text-align:center;">' + product.product_item_type_name + '</option>';
+                        }
+                    });
+                    
+                    // Append new row with the select dropdown
+                    $("#divNextPurchaseOrder").append(`
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product</label>
+                                <select name="item-dropdown[]" id="selectpicker" data-live-search="true" class="form-control selectpicker text-center" style="">` +
+                                    optionsHtml +
+                                `</select>
+                            </div>
 
-                                if($resultp->num_rows > 0){
-                                    while($rowsp = $resultp->fetch_assoc()){
-                                        echo '<option value="'.$rowsp['product_Id'].'" style="text-align-center;">'.$rowsp['product_item_type_name'].'</option>';
-                                    }
-                                }
-                            ?>
+                            <div class="col-md-4">
+                                <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>No. of Items</label>
+                                <input type="number" name="no_of_item[]" id="name" class="form-control" >
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="" style="font-size: 18px; font-weight: 600; visibility: hidden" ><span class="text-danger " >* </span>No. of Items</label>
+                                <input type="button" name="" id="removeOrder" class="removeOrder btn btn-danger btn-block ml-0" value="Remove" required>
+                            </div>
+                        </div>`);
+
+                    $('.selectpicker').selectpicker();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            
+
+            // $("#divNextPurchaseOrder").append(
+            //     `
+            //     <div class="row mt-3">
+            //         <div class="col-md-6">
+            //             <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product</label>
+            //             <select name="item-dropdown[]" id="selectpicker" data-live-search="true" class="form-control selectpicker" style="">
+            //                 <option value="">Select Item</option>
+            //                 <?php 
+            //                     $sqlp = "SELECT p.product_Id, p.item_code, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
+            //                     $resultp = $conn->query($sqlp);
+
+            //                     if($resultp->num_rows > 0){
+            //                         while($rowsp = $resultp->fetch_assoc()){
+            //                             if(!in_array($rowsp['product_Id'], selectedItemOptions)){
+            //                                 echo '<option value="'.$rowsp['product_Id'].'" style="text-align-center;">'.$rowsp['product_item_type_name'].'</option>';
+            //                             }
+                                        
+            //                         }
+            //                     }
+            //                 ?>
                             
-                        </select>
-                    </div>
+            //             </select>
+            //         </div>
 
-                    <div class="col-md-4">
-                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>No. of Items</label>
-                        <input type="number" name="no_of_item[]" id="name" class="form-control" >
-                    </div>
+            //         <div class="col-md-4">
+            //             <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>No. of Items</label>
+            //             <input type="number" name="no_of_item[]" id="name" class="form-control" >
+            //         </div>
 
-                    <div class="col-md-2">
-                        <label for="" style="font-size: 18px; font-weight: 600; visibility: hidden" ><span class="text-danger " >* </span>No. of Items</label>
-                        <input type="button" name="" id="removeOrder" class="removeOrder btn btn-danger btn-block ml-0" value="Remove" required>
-                    </div>
-                </div>`);
+            //         <div class="col-md-2">
+            //             <label for="" style="font-size: 18px; font-weight: 600; visibility: hidden" ><span class="text-danger " >* </span>No. of Items</label>
+            //             <input type="button" name="" id="removeOrder" class="removeOrder btn btn-danger btn-block ml-0" value="Remove" required>
+            //         </div>
+            //     </div>`);
 
-                $('.selectpicker').selectpicker();
+            //     $('.selectpicker').selectpicker();
     
         })
 

@@ -102,8 +102,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="d-none">CATEGORY ID</th>
-                                        <th scope="col">CATEGORY NAME</th>
-                                        <th scope="col">ACTION</th>
+                                        <th scope="col" class="text-center">CATEGORY NAME</th>
+                                        <th scope="col" class="text-center">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -118,7 +118,7 @@
                                         <?php while($row = $result->fetch_assoc()){?>
                                     <tr>
                                         <td class="d-none"><?php echo $row['category_Id'];?></td>
-                                        <td><?php echo $row['category_Name'];?></td>
+                                        <td class="text-center"><?php echo $row['category_Name'];?></td>
                                         <td class="d-flex justify-content-around align-items-center">
 
                                             <!-- Button trigger modal -->

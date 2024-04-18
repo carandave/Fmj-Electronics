@@ -1,3 +1,20 @@
+#cold{
+    background-color: #606FF2;
+}
+
+.nav{
+    background: black !important;
+}
+
+.nav .nav-link-archive {
+    background: black !important;
+}
+
+.nav .active{
+    background: black !important;
+}
+
+
 
 .top-header-container{
     background-color: #e4e4e481;

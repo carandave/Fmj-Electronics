@@ -108,8 +108,11 @@ require_once("../connection.php");
         $edit_last_name = $_POST['edit_last_name'];
         $edit_email_address = $_POST['edit_email_address'];
         $edit_userType = $_POST['edit_userType'];
+        $edit_status = $_POST['edit_status'];
+        $edit_password = $_POST['edit_password'];
+        $edit_password = sha1($edit_password);
         
-        $sqlu = "UPDATE officials SET first_name='$edit_first_name', last_name='$edit_last_name', email_address='$edit_email_address', user_type='$edit_userType' WHERE officials_Id='$edit_officials_Id'";
+        $sqlu = "UPDATE officials SET first_name='$edit_first_name', last_name='$edit_last_name', email_address='$edit_email_address', password='$edit_password', user_type='$edit_userType', status='$edit_status' WHERE officials_Id='$edit_officials_Id'";
         $result = $conn->query($sqlu);
 
         if($result){
@@ -188,12 +191,222 @@ require_once("../connection.php");
         $sql = "UPDATE order_purchase SET status='$status_batch' WHERE order_Id='$edit_purchaseOrderId'";
         $result = $conn->query($sql);
         if($result){
+
+            $sqlu = "UPDATE order_purchase_item SET status='$status_batch' WHERE order_Id='$edit_purchaseOrderId'";
+            $resultu = $conn->query($sqlu);
+
             echo "editedSuccess";
         }
 
         else{
             echo "NotSuccess";
         }
+    }
+
+    if(isset($_POST['action']) && $_POST['action'] == "editOrder"){
+        $edit_purchaseOrderId = $_POST['edit_purchaseOrderId'];
+        $edit_productId = $_POST['edit_productId'];
+        $status_order = $_POST['status_order'];
+        $no_of_item = $_POST['no_of_item'];
+        $date_updated = date('Y-m-d');
+
+        if($status_order == "Added"){
+            $sqld = "SELECT * FROM products WHERE product_Id='$edit_productId'";
+            $resultd = $conn->query($sqld);
+            $rowd = $resultd->fetch_assoc();
+    
+            $stocks = $rowd['stocks'];
+            $updated = "Yes";
+    
+            $no_of_stocks_add = $no_of_item + $stocks;
+            
+            $sqld = "SELECT * FROM order_purchase_item WHERE updated='No' AND order_purchase_item_Id='$edit_purchaseOrderId' AND item='$edit_productId'";
+            $resultd = $conn->query($sqld);
+
+            if($resultd->num_rows > 0){
+                
+                $sql = "UPDATE products SET stocks='$no_of_stocks_add' WHERE product_Id='$edit_productId'";
+                $result = $conn->query($sql);
+
+                if($result){
+                    $sqlu = "UPDATE order_purchase_item SET status='$status_order', updated='$updated', date_updated='$date_updated' WHERE order_purchase_item_Id='$edit_purchaseOrderId'";
+                    $resultu = $conn->query($sqlu);
+                    echo "editedSuccess";
+                }
+
+                else{
+                    echo "NotSuccess";
+                }
+                
+                
+            }
+
+            else{
+                echo "addedFailed";
+            }
+
+        }
+
+        else{
+            $sqlu = "UPDATE order_purchase_item SET status='$status_order', date_updated='$date_updated' WHERE order_purchase_item_Id='$edit_purchaseOrderId'";
+            $resultu = $conn->query($sqlu);
+
+            if($resultu){
+                echo "editedSuccess";
+            }
+
+            else{
+                echo "NotSuccess";
+            }
+           
+        }
+
+        
+    }
+
+
+    if(isset($_POST['action']) && $_POST['action'] == "editAllStocks"){
+        if(isset($_POST['order_purchase_item_Id'])){
+            $order_purchase_item_Ids = $_POST['order_purchase_item_Id'];
+
+            $product_Ids = $_POST['product_Id'];
+            $no_of_items = $_POST['no_of_item'];
+
+            $status_order = "Added";
+        $date_updated = date('Y-m-d');
+
+        if(empty($order_purchase_item_Ids)){
+            echo "noEditItem";
+        }
+
+        else{
+            foreach ($order_purchase_item_Ids as $key => $order_purchase_item_Id) {
+                $product_Id = $product_Ids[$key];
+                $no_of_item = $no_of_items[$key];
+    
+                
+    
+                $sqld = "SELECT * FROM products WHERE product_Id='$product_Id'";
+                $resultd = $conn->query($sqld);
+                $rowd = $resultd->fetch_assoc();
+        
+                $stocks = $rowd['stocks'];
+                $updated = "Yes";
+        
+                $no_of_stocks_add = $no_of_item + $stocks;
+    
+                $sqld = "SELECT * FROM order_purchase_item WHERE order_purchase_item_Id='$order_purchase_item_Id' AND item='$product_Id'";
+                $resultd = $conn->query($sqld);
+    
+                if($resultd->num_rows > 0){
+                    
+                    $sql = "UPDATE products SET stocks='$no_of_stocks_add' WHERE product_Id='$product_Id'";
+                    $result = $conn->query($sql);
+    
+                    if($result){
+                        $sqlu = "UPDATE order_purchase_item SET status='$status_order', updated='$updated', date_updated='$date_updated' WHERE order_purchase_item_Id='$order_purchase_item_Id'";
+                        $resultu = $conn->query($sqlu);
+                        
+                    }
+    
+                    else{
+                        echo "NotSuccess";
+                    }
+                    
+                    
+                }
+    
+                else{
+                    echo "addedFailed";
+                }
+    
+                
+                }
+            }
+
+            if($resultu){
+                echo "editedSuccess";
+            }
+
+            else{
+                echo "NotSuccess";
+            }
+
+            
+        }
+
+        else{
+            echo "noEditItem";
+        }
+        
+        
+
+        
+
+        
+
+        
+
+
+
+        // print_r($order_purchase_item_Id);
+        // print_r($product_Id);
+        // $status_order = $_POST['status_order'];
+        // $no_of_item = $_POST['no_of_item'];
+        // $date_updated = date('Y-m-d');
+
+        // if($status_order == "Added"){
+        //     $sqld = "SELECT * FROM products WHERE product_Id='$edit_productId'";
+        //     $resultd = $conn->query($sqld);
+        //     $rowd = $resultd->fetch_assoc();
+    
+        //     $stocks = $rowd['stocks'];
+        //     $updated = "Yes";
+    
+        //     $no_of_stocks_add = $no_of_item + $stocks;
+            
+        //     $sqld = "SELECT * FROM order_purchase_item WHERE updated='No' AND order_purchase_item_Id='$edit_purchaseOrderId' AND item='$edit_productId'";
+        //     $resultd = $conn->query($sqld);
+
+        //     if($resultd->num_rows > 0){
+                
+        //         $sql = "UPDATE products SET stocks='$no_of_stocks_add' WHERE product_Id='$edit_productId'";
+        //         $result = $conn->query($sql);
+
+        //         if($result){
+        //             $sqlu = "UPDATE order_purchase_item SET status='$status_order', updated='$updated', date_updated='$date_updated' WHERE order_purchase_item_Id='$edit_purchaseOrderId'";
+        //             $resultu = $conn->query($sqlu);
+        //             echo "editedSuccess";
+        //         }
+
+        //         else{
+        //             echo "NotSuccess";
+        //         }
+                
+                
+        //     }
+
+        //     else{
+        //         echo "addedFailed";
+        //     }
+
+        // }
+
+        // else{
+        //     $sqlu = "UPDATE order_purchase_item SET status='$status_order', date_updated='$date_updated' WHERE order_purchase_item_Id='$edit_purchaseOrderId'";
+        //     $resultu = $conn->query($sqlu);
+
+        //     if($resultu){
+        //         echo "editedSuccess";
+        //     }
+
+        //     else{
+        //         echo "NotSuccess";
+        //     }
+           
+        // }
+
+        
     }
 
 ?>

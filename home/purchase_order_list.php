@@ -61,14 +61,41 @@
                             <i class="fa-solid fa-layer-group"></i><span>PURCHASE ORDER LIST</span>
                         </div>
 
+                        <form action="purchase_order_print_filter.php" method="POST" class="mt-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="" class="font-weight-bold">From Date</label>
+                                    <input type="date" name="from" class="form-control">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="" class="font-weight-bold">To Date</label>
+                                    <input type="date" name="to" class="form-control">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div>
+                                        <label for="" class="font-weight-bold " style="visibility: hidden">To Date</label>
+                                    </div>
+                                    
+                                    <input type="submit" name="printFilter" class="btn btn-secondary btn-block" value="Filter" >
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div>
+                                        <label for="" class="font-weight-bold " style="visibility: hidden">To Date</label>
+                                    </div>
+                                    <a href="purchase_order_print.php" class="btn btn-success btn-block">Print Report</a>
+                                </div>
+                            </div>
+                        </form>
+
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 
 
                                 <div class="d-flex justify-content-end align-items-center " style="flex-direction: row">
-                                    <a href="purchase_order.php" class="btn btn-info addBtn" >ADD ORDER</a>
-                                    <a href="#" class="btn btn-primary addBtn mx-3">ADD ALL</a>
-                                    <a href="#" class="btn btn-primary addBtn" >RETURN ALL</a>
+                                    <a href="purchase_order.php" class="btn btn-primary addBtn" >ADD ORDER</a>
                                 </div>
 
                                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -153,7 +180,7 @@
                                     <table class="table table-hover table-border table-sm">
                                         <thead>
                                             <tr>
-                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ID</th>
+                                                <th scope="col" class="text-center d-none" style="font-size: 20px; font-weight: 700">ID</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">BATCH #</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">DATE CREATED</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">SUPPLIER</th>
@@ -179,7 +206,7 @@
                                                     
                                                 ?>
                                             <tr>
-                                                <td class="text-center " style="font-size: 20px;" ><?php echo $row['order_Id'];?></td>
+                                                <td class="text-center d-none" style="font-size: 20px;" ><?php echo $row['order_Id'];?></td>
                                                 <td class="text-center" style="font-size: 20px;" ><?php echo $x;?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo date("F j Y", strtotime($row['date_created']));?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo $row['name'];?></td>
@@ -230,10 +257,9 @@
                                                                                 <select name="status_batch" id="status" class="form-control">
                                                                                     <option value="">Select Status</option>
                                                                                     <option value="Pending">Pending</option>
-                                                                                    <option value="Confirmed">Confirmed</option>
-                                                                                    <option value="Delivered">Delivered</option>
+                                                                                    <option value="On-Going">On-Going</option>
                                                                                     <option value="Successed">Successed</option>
-                                                                                    <option value="Returned">Returned</option>
+                                                                                    <option value="Returned">Reject</option>
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -255,7 +281,7 @@
                                                         </div>
                                                     </div>
                                                     </div>
-                                                    <a href="purchase_order_view_list.php?order_Id=<?php echo $row['order_Id'];?>&batch=<?php echo $x; ?>" class="btn btn-info editBtn ml-1"> VIEW</button>
+                                                    <a href="purchase_order_view_list.php?order_Id=<?php echo $row['order_Id'];?>&batch=<?php echo $x; ?>" class="btn btn-info ml-1"> VIEW</button>
                                                 </td>
                                             </tr>
                                                 <?php 

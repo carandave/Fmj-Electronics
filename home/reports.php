@@ -14,6 +14,22 @@
 
     $user_type = $_SESSION['user_type'];
 
+    // LAST MONTH SALE
+    $sqll = "SELECT FORMAT(SUM(final_total_amount), 2) AS sales_count_last_month FROM transactions_table WHERE DATE_FORMAT(date_added, '%Y-%m') = DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH, '%Y-%m')";
+    $resultl = $conn->query($sqll);
+
+
+    // THIS MONTH SALE
+    $sqlt = "SELECT FORMAT(SUM(final_total_amount), 2) AS sales_count_this_month FROM transactions_table WHERE MONTH(date_added) = MONTH(CURRENT_DATE) AND YEAR(date_added) = YEAR(CURRENT_DATE)";
+    $resultt = $conn->query($sqlt);
+
+
+    // THIS WEEK SALE
+    $sqlw = "SELECT FORMAT(SUM(final_total_amount), 2) AS sales_count_this_week FROM transactions_table WHERE YEARWEEK(date_added) = YEARWEEK(NOW())";
+    $resultw = $conn->query($sqlw);
+
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -58,6 +74,63 @@
                             <i class="fa-solid fa-layer-group"></i><span>REPORTS</span>
                         </div>
 
+                        <div class="row m-0 p-0 mt-3">
+                            <div class="col-md-4 box">
+                                <div class="box-content-container">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                    <p>
+                                        <?php 
+                                        
+                                        if($resultl->num_rows > 0){
+                                            while($row = $resultl->fetch_assoc()){
+                                                echo $row['sales_count_last_month'];
+
+                                            }
+                                        }
+                                        ?>
+                                    </p>
+                                    <h3>Last Month Sales</h3>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 box">
+                                <div class="box-content-container">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                    <p>
+                                        <?php 
+                                        
+                                        if($resultt->num_rows > 0){
+                                            while($row = $resultt->fetch_assoc()){
+                                                echo $row['sales_count_this_month'];
+
+                                            }
+                                        }
+                                        ?>
+                                    </p>
+                                    <h3>This Month Sales</h3>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 box">
+                                <div class="box-content-container">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                    <p>
+                                        <?php 
+                                        
+                                        if($resultw->num_rows > 0){
+                                            while($row = $resultw->fetch_assoc()){
+                                                echo $row['sales_count_this_week'];
+
+                                            }
+                                        }
+                                        ?>
+                                    </p>
+                                    <h3>This Week Sales</h3>
+                                </div>
+                                
+                            </div>
+                        </div>
+
                         <?php 
                         
                         $sql = "SELECT * FROM transactions_table GROUP BY transaction_Number ORDER BY transaction_Id DESC";
@@ -65,21 +138,7 @@
                         $num = 1;
                         ?>
 
-                        <div class="row mt-4">
-                            <div class="col-md-4">
-                                <a href="reports_print.php" class="btn btn-primary">Print Report</a>
-                            </div>
-
-                            <div class="col-md-4">
-                                
-                            </div>
-
-                            <div class="col-md-3">
-                                
-                            </div>
-                        </div>
-
-                        <form action="reports_print_filter.php" method="POST" class="mt-3">
+                        <form action="reports_print_filter.php" method="POST" class="">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="" class="font-weight-bold">From Date</label>
@@ -91,12 +150,19 @@
                                     <input type="date" name="to" class="form-control">
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div>
                                         <label for="" class="font-weight-bold " style="visibility: hidden">To Date</label>
                                     </div>
                                     
-                                    <input type="submit" name="printFilter" class="btn btn-primary" value="Filter">
+                                    <input type="submit" name="printFilter" class="btn btn-secondary btn-block" value="Filter" >
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div>
+                                        <label for="" class="font-weight-bold " style="visibility: hidden">To Date</label>
+                                    </div>
+                                    <a href="reports_print.php" class="btn btn-primary btn-block">Print Report</a>
                                 </div>
                             </div>
                         </form>

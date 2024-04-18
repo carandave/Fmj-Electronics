@@ -65,7 +65,7 @@
                             <div class="col-md-12">
                                 <?php 
                                 
-                                    $sql = "SELECT * FROM supplier ORDER BY supplier_Id DESC";
+                                    $sql = "SELECT * FROM supplier WHERE status='Active' ORDER BY supplier_Id DESC";
                                     $result = $conn->query($sql);
                                 ?>
 
@@ -103,7 +103,7 @@
 
                                                 <div class="col-md-6">
                                                     <label for=""><span class="text-danger">* </span>Contact No.</label>
-                                                    <input type="email" value="" name="contact_no" id="contact_no" class="form-control" >
+                                                    <input type="number" value="" name="contact_no" id="contact_no" class="form-control" >
                                                 </div>
                                             </div>
 
@@ -138,10 +138,12 @@
                                     <table class="table table-hover table-border table-sm">
                                         <thead>
                                             <tr>
-                                                <th scope="col" class="text-center " style="font-size: 20px; font-weight: 700">ID</th>
+                                                <th scope="col" class="text-center d-none" style="font-size: 20px; font-weight: 700">ID</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">DATE CREATED </th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">SUPPLIER </th>
+                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ADDRESS </th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">CONTACT PERSON</th>
+                                                <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">CONTACT NO</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">STATUS</th>
                                                 <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ACTION</th>
                                             </tr>
@@ -151,89 +153,77 @@
                                             <?php if($result->num_rows > 0){?>
                                                 <?php while($row = $result->fetch_assoc()){?>
                                             <tr>
-                                                <td class="text-center " style="font-size: 20px;" ><?php echo $row['supplier_Id'];?></td>
+                                                <td class="text-center d-none" style="font-size: 20px;" ><?php echo $row['supplier_Id'];?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo date("F j Y", strtotime($row['date_created']));?></td>
                                                 <td class="text-center" style="font-size: 20px;" ><?php echo $row['name'];?></td>
+                                                <td class="text-center" style="font-size: 20px;" ><?php echo $row['address'];?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo $row['contact_person'];?></td>
+                                                <td class="text-center" style="font-size: 20px;"><?php echo $row['contact_no'];?></td>
                                                 <td class="text-center" style="font-size: 20px;"><?php echo $row['status'];?></td>
                                                 
                                                 <td class="d-flex justify-content-center align-items-center">
-                                                    <button type="button" class="btn btn-secondary editBtn" data-toggle="modal" data-target="#edit<?php echo $row['supplier_Id'];?>"> EDIT</button>
+                                                    <button type="button" class="btn btn-secondary editBtn"> EDIT</button>
 
-                                                    <!-- Modal -->
-                                            <div class="modal fade" id="edit<?php echo $row['supplier_Id'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Edit Supplier</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="edit-form">
-                                                            <div class="row">
-                                                                <input type="text" value="<?php echo $row['supplier_Id'];?>" name="edit_supplier_Id" id="edit_supplier_Id " class="form-control d-none " >
-                                                                <div class="col-md-6">
-                                                                    <label for="" ><span class="text-danger">* </span>Name</label>
-                                                                    <input type="text" value="<?php echo $row['name'];?>" name="edit_name" id="edit_name" class="form-control" >
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="edit_supplier" tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Supplier</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <label for=""><span class="text-danger">* </span>Address</label>
-                                                                    <input type="text" value="<?php echo $row['address'];?>" name="edit_address" id="edit_address" class="form-control" >
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="row mt-3">
-                                                                <div class="col-md-6">
-                                                                    <label for=""><span class="text-danger">* </span>Contact Person</label>
-                                                                    <input type="text" value="<?php echo $row['contact_person'];?>" name="edit_contact_person" id="edit_contact_person" class="form-control" >
-                                                                </div>
-
-                                                                <div class="col-md-6">
-                                                                    <label for=""><span class="text-danger">* </span>Contact No.</label>
-                                                                    <input type="text" value="<?php echo $row['contact_no'];?>" name="edit_contact_no" id="edit_contact_no" class="form-control" >
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row mt-3">
-                                                                <div class="col-md-12">
-                                                                    <label for=""><span class="text-danger">* </span>Status</label>
-                                                                    <!-- <input type="text" value="" id="status" class="form-control" > -->
-                                                                    <select name="edit_status" id="edit_status" class="form-control" >
-                                                                        <option value="">Select Status:</option>
-                                                                        <option value="Active"
+                                                                <div class="modal-body">
+                                                                    <form id="edit-form">
+                                                                        <div class="row">
+                                                                            <input type="text" name="edit_supplier_Id" id="edit_supplier_Id" class="form-control d-none" >
+                                                                            <div class="col-md-6">
+                                                                                <label for="" ><span class="text-danger">* </span>Name</label>
+                                                                                <input type="text"  name="edit_name" id="edit_name" class="form-control" >
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label for=""><span class="text-danger">* </span>Address</label>
+                                                                                <input type="text"  name="edit_address" id="edit_address" class="form-control" >
+                                                                            </div>
+                                                                        </div>
                                                                         
-                                                                        <?php 
-                                                                        if($row['status'] == "Active"){ echo 'selected'; }  
-                                                                        ?>
+                                                                        <div class="row mt-3">
+                                                                            <div class="col-md-6">
+                                                                                <label for=""><span class="text-danger">* </span>Contact Person</label>
+                                                                                <input type="text" name="edit_contact_person" id="edit_contact_person" class="form-control" >
+                                                                            </div>
 
-                                                                        >Active</option>
-                                                                        <option value="Inactive"
-                                                                        
-                                                                        <?php 
-                                                                        if($row['status'] == "Inactive"){ echo 'selected'; }  
-                                                                        ?>
-                                                                        
-                                                                        >Inactive</option>
-                                                                    </select>
+                                                                            <div class="col-md-6">
+                                                                                <label for=""><span class="text-danger">* </span>Contact No.</label>
+                                                                                <input type="number" name="edit_contact_no" id="edit_contact_no" class="form-control" >
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row mt-3">
+                                                                            <div class="col-md-12">
+                                                                                <label for=""><span class="text-danger">* </span>Status</label>
+                                                                                <!-- <input type="text" value="" id="status" class="form-control" > -->
+                                                                                <select name="edit_status" id="edit_status" class="form-control" >
+                                                                                    <option value="Active">Active</option>
+                                                                                    <option value="Inactive">Inactive</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="modal-footer">
+                                                                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                                                            <!-- <button type="button" class="btn btn-primary">Save</button> -->
+                                                                            <input type="submit" name="editBtn" id="updateBtn" value="UPDATE" class="btn btn-info">
+
+                                                                            <!-- Dito na tayo sa form ang pag eedit ng status  -->
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                
                                                                 </div>
                                                             </div>
-
-                                                            <div class="modal-footer">
-                                                                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                                                                <!-- <button type="button" class="btn btn-primary">Save</button> -->
-                                                                <input type="submit" name="editBtn" id="editBtn" value="UPDATE" class="btn btn-info">
-
-                                                                <!-- Dito na tayo sa form ang pag eedit ng status  -->
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                    
-                                                    </div>
-                                                </div>
-                                                </div>
                                                 </td>
 
                                                 
@@ -273,6 +263,30 @@
 
         $(document).ready(function(){
 
+            $('.editBtn').on('click', function(){
+                console.log("Clikced")
+                $('#edit_supplier').modal('show');
+
+                $tr = $(this).closest('tr');
+
+                var data = $tr.children("td").map(function(){
+                    return $(this).text();
+                }).get();
+
+
+                $('#edit_supplier_Id').val(data[0]);
+                $('#edit_name').val(data[2]);
+                $('#edit_address').val(data[3]);
+                $('#edit_contact_person').val(data[4]);
+                $('#edit_contact_no').val(data[5]);
+                $('#edit_status').val(data[6]);
+
+                $('#edit_status option').filter(function() {
+                    return $(this).text() === data[6];
+                }).prop('selected', true);
+
+            });
+
             $("#addBtn").click(function(e){
             console.log("napindot");
             e.preventDefault();
@@ -294,6 +308,16 @@
                         })
                     }
 
+                    else if(response == "emptyFields"){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Make sure the fields are not empty. Please try again Thankyou!',
+                            showConfirmButton: false,
+                            timer: 1300  
+                        })
+                    }
+
                     else if(response == "error"){
                         Swal.fire({
                             position: 'center',
@@ -310,7 +334,7 @@
         })
 
             // console.log("Hello World")
-        $("#editBtn").click(function(e){
+        $("#updateBtn").click(function(e){
             console.log("napindot");
             e.preventDefault();
 

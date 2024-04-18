@@ -67,14 +67,17 @@
                         <div class="card ">
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="card-title mb-0 mr-3">Print Transaction Receipt</h5>
+                                <!-- <h5 class="card-title mb-0 mr-3">Print Transaction Receipt</h5> -->
+                                <a href="transaction.php" class="btn btn-secondary btn-border btn-round">
+                                Back
+                                </a>
 
-                                <div>
+                            <div>
 
-                                <button class="btn btn-success btn-border btn-round" onclick="printDiv('printThis')">
-                                    Print
-                                </button>
-                                </div>
+                            <button class="btn btn-success btn-border btn-round" onclick="printDiv('printThis')">
+                                Print
+                            </button>
+                            </div>
                                 
                                 
                             </div>       
@@ -168,7 +171,7 @@
 
                                 <?php 
                                     // $sql = "SELECT * FROM transactions_table WHERE transaction_Number='$transactionNo' ORDER BY transaction_Id DESC";
-                                    $sql = "SELECT t.transaction_Id, t.transaction_Number, t.product_Id, t.item_code, t.qty, t.price, t.total_amount, t.final_total_amount, t.payment, t.change, t.date_added, p.product_Id, p.type_Id, c.category_product_item_type_Id, c.product_item_type_name FROM transactions_table t INNER JOIN products p ON t.product_id = p.product_Id INNER JOIN category_product_item_type_table c ON c.category_product_item_type_Id = p.type_Id WHERE t.transaction_Number='$transactionNo'";
+                                    $sql = "SELECT t.transaction_Id, t.transaction_Number, t.product_Id, t.item_code, t.qty, t.price, t.total_amount, t.final_total_amount, t.payment, t.payment_method, t.change, t.date_added, p.product_Id, p.type_Id, c.category_product_item_type_Id, c.product_item_type_name FROM transactions_table t INNER JOIN products p ON t.product_id = p.product_Id INNER JOIN category_product_item_type_table c ON c.category_product_item_type_Id = p.type_Id WHERE t.transaction_Number='$transactionNo'";
                                     $result = $conn->query($sql);
                                     $num = 1;
                                 ?>
@@ -221,6 +224,9 @@
                                                 <div class="row">
                                                     <div class="col-md-7 text-right">
                                                         <div>
+                                                            <span class="font-weight-bold" style="font-size: 18px">Payment Method: </span>
+                                                        </div>
+                                                        <div>
                                                             <span class="font-weight-bold" style="font-size: 18px">Total Price: </span>
                                                         </div>
                                                         <div>
@@ -233,13 +239,16 @@
 
                                                     <?php 
                                                         // $sql = "SELECT * FROM transactions_table WHERE transaction_Number='$transactionNo' ORDER BY transaction_Id DESC";
-                                                        $sql = "SELECT t.transaction_Id, t.transaction_Number, t.product_Id, t.item_code, t.qty, t.price, t.total_amount, t.final_total_amount, t.payment, t.change, t.date_added, p.product_Id, p.type_Id, c.category_product_item_type_Id, c.product_item_type_name FROM transactions_table t INNER JOIN products p ON t.product_id = p.product_Id INNER JOIN category_product_item_type_table c ON c.category_product_item_type_Id = p.type_Id WHERE t.transaction_Number='$transactionNo' GROUP BY t.transaction_Number";
+                                                        $sql = "SELECT t.transaction_Id, t.transaction_Number, t.product_Id, t.item_code, t.qty, t.price, t.total_amount, t.final_total_amount, t.payment, t.payment_method, t.change, t.date_added, p.product_Id, p.type_Id, c.category_product_item_type_Id, c.product_item_type_name FROM transactions_table t INNER JOIN products p ON t.product_id = p.product_Id INNER JOIN category_product_item_type_table c ON c.category_product_item_type_Id = p.type_Id WHERE t.transaction_Number='$transactionNo' GROUP BY t.transaction_Number";
                                                         $result = $conn->query($sql);
                                                     ?>
 
                                                     <?php if($result->num_rows == 1){?>
                                                             <?php while($row = $result->fetch_assoc()){?>
                                                     <div class="col-md-5 text-center">
+                                                        <div style="border-bottom: 1px solid gray">
+                                                            <span class="font-weight-bold" style="font-size: 18px"><?php echo $row['payment_method']?></span>
+                                                        </div>
                                                         <div style="border-bottom: 1px solid gray">
                                                             <span class="font-weight-bold " style="font-size: 18px; "><?php echo $row['final_total_amount']?></span>
                                                         </div>

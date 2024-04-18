@@ -135,7 +135,7 @@
                                                         <input type="text" name="stocks" class="form-control" >
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Price</label>
+                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
                                                         <input type="text" name="prize" class="form-control" >
                                                     </div>
                                                 </div>
@@ -184,7 +184,7 @@
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRODUCT TYPES</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">TYPES</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">STOCKS</th>
-                                        <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRICE</th>
+                                        <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRIZE</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ACTION</th>
                                     </tr>
                                 </thead>
@@ -245,32 +245,87 @@
 
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Category</label>
-                                                                    <input type="text" id="edit_category_Id" name="edit_category_Id" class="form-control" readonly >
+                                                                    <!-- <input type="text" id="edit_category_Id" name="edit_category_Id" class="form-control" readonly > -->
+
+                                                                    <select name="edit_category_Id" id="edit_category_Id" data-live-search="true" class="form-control">
+                                                                        <option value="">Select Category</option>
+                                                                        <?php 
+                                                                            $sqlc = "SELECT * FROM category_table ORDER BY category_Id DESC";
+                                                                            $resultc = $conn->query($sqlc);
+                                                                        ?>
+                                                                        <?php if($resultc->num_rows > 0){?>
+                                                                            <?php while($rowc = $resultc->fetch_assoc()){?>
+                                                                                <option value="<?php echo $rowc['category_Id']?>" class="font-weight-bold" style="font-size:18px;"><?php echo $rowc['category_Name']?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    </select>
                                                                 </div>
 
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product</label>
-                                                                    <input type="text" id="edit_category_product_Id" name="edit_category_product_Id" class="form-control" readonly>
+                                                                    <!-- <select name="product_id" id="product-dropdown" data-live-search="true" class="form-control">
+                                                                        <option value="">Select Product</option>
+                                                                    </select> -->
+
+                                                                    <select name="edit_category_product_Id" id="edit_category_product_Id" data-live-search="true" class="form-control">
+                                                                        <option value="">Select Product</option>
+                                                                        <?php 
+                                                                            $sqlc = "SELECT * FROM category_product_table ORDER BY category_product_Id DESC";
+                                                                            $resultc = $conn->query($sqlc);
+                                                                        ?>
+                                                                        <?php if($resultc->num_rows > 0){?>
+                                                                            <?php while($rowc = $resultc->fetch_assoc()){?>
+                                                                                <option value="<?php echo $rowc['category_product_Id']?>" class="font-weight-bold" style="font-size:18px;"><?php echo $rowc['product_Name']?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    </select>
+
+                                                                    <!-- <input type="text" id="edit_category_product_Id" name="edit_category_product_Id" class="form-control" readonly> -->
                                                                 </div>
                                                                 
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product Type</label>
-                                                                    <input type="text" id="edit_product_type_Id" name="edit_product_type_Id" class="form-control" readonly>
+                                                                    <select name="edit_product_type_Id" id="edit_product_type_Id" data-live-search="true" class="form-control">
+                                                                        <option value="">Select Product Type</option>
+                                                                        <?php 
+                                                                            $sqlc = "SELECT * FROM category_product_item_table ORDER BY category_product_item_Id DESC";
+                                                                            $resultc = $conn->query($sqlc);
+                                                                        ?>
+                                                                        <?php if($resultc->num_rows > 0){?>
+                                                                            <?php while($rowc = $resultc->fetch_assoc()){?>
+                                                                                <option value="<?php echo $rowc['category_product_item_Id']?>" class="font-weight-bold" style="font-size:18px;"><?php echo $rowc['product_item_name']?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                    
+                                                                    <!-- <input type="text" id="edit_product_type_Id" name="edit_product_type_Id" class="form-control" readonly> -->
                                                                 </div>
                                                                 
                                                                 <div class="mt-1">
                                                                     <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Type</label>
-                                                                    <input type="text" id="edit_type_Id" name="edit_type_Id" class="form-control" readonly>
+                                                                    <select name="edit_type_Id" id="edit_type_Ids" data-live-search="true" class="form-control">
+                                                                        <option value="">Select Type</option>
+                                                                        <?php 
+                                                                            $sqlc = "SELECT * FROM category_product_item_type_table ORDER BY category_product_item_type_Id DESC";
+                                                                            $resultc = $conn->query($sqlc);
+                                                                        ?>
+                                                                        <?php if($resultc->num_rows > 0){?>
+                                                                            <?php while($rowc = $resultc->fetch_assoc()){?>
+                                                                                <option value="<?php echo $rowc['category_product_item_type_Id']?>" class="font-weight-bold" style="font-size:18px;"><?php echo $rowc['product_item_type_name']?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                    <!-- <input type="text" id="edit_type_Id" name="edit_type_Id" class="form-control" readonly> -->
                                                                 </div>
 
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
-                                                                        <input type="text" id="stocks" name="stocks" class="form-control"  readonly>
+                                                                        <input type="text" id="stocks" name="stocks" class="form-control" readonly>
                                                                     </div>
 
                                                                     <div class="col-md-6">
-                                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Price</label>
+                                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
                                                                         <input type="text" id="prize" name="prize" class="form-control" >
                                                                     </div>
                                                                 </div>
@@ -432,15 +487,40 @@
                     return $(this).text();
                 }).get();
 
+                console.log(data)
+
                 $('#edit_product_Id').val(data[0]);
                 $('#edit_item_code').val(data[1]);
                 $('#edit_bar_code').val(data[2]);
+
                 $('#edit_category_Id').val(data[3]);
+                $('#edit_category_Id option').filter(function() {
+                    return $(this).text() === data[3];
+                }).prop('selected', true);
+
+
                 $('#edit_category_product_Id').val(data[4]);
+                $('#edit_category_product_Id option').filter(function() {
+                    return $(this).text() === data[4];
+                }).prop('selected', true);
+
+
                 $('#edit_product_type_Id').val(data[5]);
-                $('#edit_type_Id').val(data[6]);
+                $('#edit_product_type_Id option').filter(function() {
+                    return $(this).text() === data[5];
+                }).prop('selected', true);
+
+
+                $('#edit_type_Ids').val(data[6].trim());
+                $('#edit_type_Ids option').filter(function() {
+                    return $(this).text().trim() === data[6].trim();
+                }).prop('selected', true);
+
+
                 $('#stocks').val(data[7]);
                 $('#prize').val(data[8]);
+
+                
 
             });
 

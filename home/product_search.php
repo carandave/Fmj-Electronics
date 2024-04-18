@@ -14,6 +14,13 @@
 
     $user_type = $_SESSION['user_type'];
 
+    if(isset( $_POST["searchSubmit"])) {
+        $getSearch = $_POST['search'];
+
+        $sql = "SELECT p.product_Id, p.item_code, p.barcode, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.item_code LIKE '%$getSearch%' || p.barcode LIKE '%$getSearch%' || cpit.product_item_type_name LIKE '%$getSearch%' || c.category_Name LIKE '%$getSearch%' || cp.product_Name LIKE '%$getSearch%' || cpi.product_item_name LIKE '%$getSearch%' AND p.archive='No'";
+        $result = $conn->query($sql);
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,9 +45,6 @@
     <!-- JS for jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <!-- Bootstrap Select Picker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
 </head>
 <body>
         <?php require_once("../templates/topNav.php")?>
@@ -59,113 +63,10 @@
                         </div>
 
                         <div class="addBtn-container d-flex justify-content-between mb-3">
-
                             <form action="product_search.php" method="post" class="d-flex mr-5 mt-3" >
-                                <input type="text" value="" name="search" id="search" class="form-control mr-1" placeholder="Search" >
-                                <input type="submit" name="searchSubmit" value="Search" id="searchSubmit" class="btn btn-dark ml-1" >
+                                <input type="text" value="" id="search" class="form-control mr-1" placeholder="Search" >
+                                <input type="submit" value="Search" id="searchSubmit" class="btn btn-dark ml-1" >
                             </form>
-                            
-
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#exampleModal">
-                                ADD PRODUCT
-                            </button>
-
-                            
-
-                            
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">ADD PRODUCT</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <form id="add-form">
-                                                <div class="">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Category</label>
-                                                    <select name="category_id" id="category-dropdown" data-live-search="true" class="form-control">
-                                                        <option value="">Select Category</option>
-                                                        <?php 
-                                                            $sqlc = "SELECT * FROM category_table ORDER BY category_Id DESC";
-                                                            $resultc = $conn->query($sqlc);
-                                                        ?>
-                                                        <?php if($resultc->num_rows > 0){?>
-                                                            <?php while($rowc = $resultc->fetch_assoc()){?>
-                                                                <option value="<?php echo $rowc['category_Id']?>" class="font-weight-bold" style="font-size:18px;"><?php echo $rowc['category_Name']?></option>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mt-2">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product</label>
-                                                    <select name="product_id" id="product-dropdown" data-live-search="true" class="form-control">
-                                                        <option value="">Select Product</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mt-2">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Product Type</label>
-                                                    <select name="produt_type_id" id="product-type-dropdown" data-live-search="true" class="form-control">
-                                                        <option value="">Select Product Type</option>
-                                                    </select>
-                                                </div>
-                                                
-                                                <div class="mt-2">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Type</label>
-                                                    <select name="type_id" id="type-dropdown" data-live-search="true" class="form-control">
-                                                        <option value="">Select Type</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mt-1">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Barcode</label>
-                                                    <input type="text" id="barcode" name="barcode" class="form-control"  >
-                                                </div>
-
-                                                <div class="row mt-1">
-                                                    <div class="col-md-6">
-                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
-                                                        <input type="text" name="stocks" class="form-control" >
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Price</label>
-                                                        <input type="text" name="prize" class="form-control" >
-                                                    </div>
-                                                </div>
-
-                                                <!-- <div class="mt-2">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
-                                                    <input type="text" name="stocks" class="form-control" >
-                                                </div>
-
-                                                <div class="mt-2">
-                                                    <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
-                                                    <input type="text" name="prize" class="form-control" >
-                                                </div> -->
-
-                                                
-                                                
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <input type="submit" id="addBtn" value="ADD" class="btn btn-primary">
-                                                </div>
-                                            </form>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                </div>
-                            </div>
-                            </div>
                         </div>
 
                         <!-- <button type="button" id="editButton" class="btn btn-secondary" >Close</button> -->
@@ -184,19 +85,11 @@
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRODUCT TYPES</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">TYPES</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">STOCKS</th>
-                                        <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRICE</th>
+                                        <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">PRIZE</th>
                                         <th scope="col" class="text-center" style="font-size: 20px; font-weight: 700">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableBody">
-                                    <?php 
-
-                                    // Dito na tayo sa pag didisplay ng product list 
-                                    
-                                    $sql = "SELECT p.product_Id, p.item_code, p.barcode, p.category_Id, p.category_product_Id, p.product_type_Id, p.type_Id, p.stocks, p.prize, p.archive, c.category_Id, c.category_Name, cp.category_product_Id, cp.product_Name, cpi.category_product_item_Id, cpi.product_item_name, cpit.category_product_item_type_Id, cpit.product_item_type_name FROM products p INNER JOIN category_table c ON p.category_Id = c.category_Id INNER JOIN category_product_table cp ON p.category_product_Id = cp.category_product_Id INNER JOIN category_product_item_table cpi ON p.product_type_Id = cpi.category_product_item_Id INNER JOIN category_product_item_type_table cpit ON p.type_Id = cpit.category_product_item_type_Id WHERE p.archive='No'";
-                                    $result = $conn->query($sql);
-                                    
-                                    ?>
 
                                     <?php if($result->num_rows > 0){?>
                                         <?php while($row = $result->fetch_assoc()){?>
@@ -266,11 +159,11 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Stocks</label>
-                                                                        <input type="text" id="stocks" name="stocks" class="form-control"  readonly>
+                                                                        <input type="text" id="stocks" name="stocks" class="form-control"  >
                                                                     </div>
 
                                                                     <div class="col-md-6">
-                                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Price</label>
+                                                                        <label for="" style="font-size: 18px; font-weight: 600"><span class="text-danger" >* </span>Prize</label>
                                                                         <input type="text" id="prize" name="prize" class="form-control" >
                                                                     </div>
                                                                 </div>
@@ -354,9 +247,6 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Sweetalert Cdn End -->
 
-    <!-- Bootstrap Select Picker -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-
     <script>
 
         function confirmDelete(self){
@@ -366,20 +256,9 @@
             $("#myModal").addClass("animate__fadeInDown");
             $("#myModal").modal("show");
             
-            
         }
 
-            
-
         $(document).ready(function(){
-
-
-            
-            // $('#category-dropdown').selectpicker();
-            // $('#product-dropdown').selectpicker();
-            // $('#product-type-dropdown').selectpicker();
-            // $('#type-dropdown').selectpicker();                                   
-                                                
 
             // ARCHIVE REQUEST AJAX
 
