@@ -22,7 +22,7 @@
     }
 
     else{
-        header("Location: products.php");
+        header("Location: inventory_view.php");
     }
 
 ?>
@@ -63,12 +63,12 @@
                 <div class="row m-0 p-0">
                     <div class="col-md-12">
                         <div class="main-title">
-                            <i class="fa-solid fa-layer-group"></i><span>PRODUCTS</span>
+                            <i class="fa-solid fa-layer-group"></i><span>INVENTORY</span>
                         </div>
 
                         <div class="addBtn-container d-flex justify-content-between mb-3">
-                            <form action="product_search.php" method="post" class="d-flex mr-5 mt-3" >
-                                <input type="text" value="" id="search" class="form-control mr-1" placeholder="Search" >
+                            <form action="inventory_view_search.php" method="post" class="d-flex mr-5 mt-3" >
+                                <input type="text" name="search" id="search" class="form-control mr-1" placeholder="Search" >
                                 <input type="submit" value="Search" id="searchSubmit" class="btn btn-dark ml-1" >
                             </form>
                         </div>
